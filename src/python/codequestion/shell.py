@@ -1,5 +1,5 @@
 """
-Codequestion query shell module.
+codequestion query shell module.
 """
 
 from cmd import Cmd
@@ -8,10 +8,10 @@ from .query import Query
 
 class Shell(Cmd):
     """
-    Codequestion query shell.
+    codequestion query shell.
     """
 
-    intro = "Codequestion query shell. Type queries into shell."
+    intro = "codequestion query shell"
     prompt = "(cqq) "
     embeddings = None
     db = None

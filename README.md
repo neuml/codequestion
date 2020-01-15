@@ -7,6 +7,8 @@ The default model for codequestion is built off the [Stack Exchange Dumps on arc
 
 An example of how codequestion works is shown below:
 
+![demo](demo.gif)
+
 ### Installation
 The easiest way to install is via pip and PyPI
 
