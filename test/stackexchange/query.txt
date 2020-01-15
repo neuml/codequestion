@@ -1,0 +1,100 @@
+android get screen dimensions|4743116|stackoverflow|Get screen width and height in Android|android
+android unique device id|2785485|stackoverflow|Is there a unique Android device ID?|android uniqueidentifier
+apt list all installed packages|17823|askubuntu|How to list all installed packages|apt package-management
+assembly pop stack|4584089|stackoverflow|What is the function of the push / pop instructions used on registers in x86 assembly?|assembly x86 stack terminology
+bash create uuid|103359|serverfault|How to create a UUID in bash?|bash uuid
+bash current time milliseconds|151109|serverfault|How do I get the current Unix time in milliseconds in Bash?|bash unix time
+bash list files|7265272|stackoverflow|How to list files in directory using bash?|bash
+bash sort du by output size|62411|serverfault|How can I sort du -h output by size|linux bash du gnu
+c cast malloc|605845|stackoverflow|Do I cast the result of malloc?|c malloc casting
+c++ convert string lower case|313970|stackoverflow|How to convert std::string to lower case?|c++ string c++-standard-library tolower
+centos print current version|54987|unix|How to determine CentOS version?|centos version
+centos upgrade 5 to 6|309053|superuser|How to upgrade CentOS 5.6 to 6.0?|linux centos
+centos when does cron.daily run|135906|serverfault|When does `cron.daily` run?|linux centos redhat cron
+c++ read file into ascii string|2602013|stackoverflow|Read whole ASCII file into C++ std::string|c++ string caching file-io standard-library
+c++ sleep|4184468|stackoverflow|Sleep for milliseconds|c++ linux sleep
+cuda gcc version|6622454|stackoverflow|CUDA incompatible with my gcc version|gcc cuda debian
+cuda get version|9727688|stackoverflow|How to get the cuda version?|cuda
+curl show http status|272265|superuser|Getting curl to output HTTP status code?|http curl status
+database inner join vs outer join|38549|stackoverflow|What is the difference between "INNER JOIN" and "OUTER JOIN"?|sql database join inner-join outer-join
+docker vs virtual machine|16047306|stackoverflow|How is Docker different from a virtual machine?|docker containers virtual-machine virtualization
+dpkg install deb file|159094|unix|How to install a deb file, by dpkg -i or by apt?|software-installation apt dpkg deb
+ec2 delete terminated instance|393417|serverfault|Delete Amazon EC2 terminated instance|amazon-ec2
+fedora print current version|540603|stackoverflow|How can I find the version of the Fedora I use?|linux fedora
+fedora test fstab|174181|serverfault|How do you validate fstab without rebooting?|fedora mount fstab
+gcc get assembly output|137038|stackoverflow|How do you get assembler output from C/C++ source in gcc?|c++ c debugging gcc assembly
+gcc vs g++|172587|stackoverflow|What is the difference between g++ and gcc?|c++ gcc g++
+git add empty directory|115983|stackoverflow|How can I add an empty directory to a Git repository?|git directory git-add
+git discard unstaged changes|52704|stackoverflow|How do I discard unstaged changes in Git?|git version-control
+git pull vs fetch|292357|stackoverflow|What is the difference between 'git pull' and 'git fetch'?|git version-control git-pull git-fetch
+git undo most recent local commit|927358|stackoverflow|How do I undo the most recent local commits in Git?|git version-control git-commit undo pre-commit
+java fix nullpointerexception|218384|stackoverflow|What is a NullPointerException, and how do I fix it?|java nullpointerexception
+java generate random number|5887709|stackoverflow|Getting random numbers in Java|java random
+java hashmap vs hashtable|40471|stackoverflow|Differences between HashMap and Hashtable?|java collections hashmap hashtable
+java heap space error|37335|stackoverflow|How to deal with "java.lang.OutOfMemoryError: Java heap space" error?|java java-ee jvm out-of-memory heap-memory
+java outofmemoryerror poi|6069847|stackoverflow|java.lang.OutOfMemoryError: Java heap space while reading excel with Apache POI|java apache-poi
+java parse date|999172|stackoverflow|How to parse a date?|java date simpledateformat
+java round decimal|11701399|stackoverflow|round up to 2 decimal places in java?|java
+javascript check if string contains substring|1789945|stackoverflow|How to check whether a string contains a substring in JavaScript?|javascript string substring string-matching
+javascript create timestamp|221294|stackoverflow|How do you get a timestamp in JavaScript?|javascript date datetime timestamp unix-timestamp
+javascript encode url|332872|stackoverflow|Encode URL in JavaScript?|javascript url encoding
+javascript for-each in array|9329446|stackoverflow|For-each over an array in JavaScript?|javascript arrays loops foreach iteration
+javascript generate uuid|105034|stackoverflow|Create GUID / UUID in JavaScript?|javascript guid uuid
+javascript html5 local storage add object|2010892|stackoverflow|Storing Objects in HTML5 localStorage|javascript html5 local-storage
+javascript include file in another file|950087|stackoverflow|How do I include a JavaScript file in another JavaScript file?|javascript file import include
+javascript redirect to another website|503093|stackoverflow|How do I redirect to another webpage?|javascript jquery redirect
+javascript remove element from array|5767325|stackoverflow|How do I remove a particular element from an array in JavaScript?|javascript arrays
+javascript replace all occurrences in string|1144783|stackoverflow|How to replace all occurrences of a string?|javascript string replace
+javascript validate email address|46155|stackoverflow|How to validate an email address in JavaScript|javascript regex validation email email-validation
+java sorted array faster|11227809|stackoverflow|Why is processing a sorted array faster than processing an unsorted array?|java c++ performance optimization branch-prediction
+java split string|3481828|stackoverflow|How to split a string in Java|java string
+java stringbuilder vs stringbuffer|355089|stackoverflow|Difference between StringBuilder and StringBuffer|java stringbuilder stringbuffer
+java string to int|5585779|stackoverflow|How do I convert a String to an int in Java?|java string int type-conversion
+java wait vs sleep|1036754|stackoverflow|Difference between wait() and sleep()|java multithreading sleep java-threads
+java ways to iterate list|18410035|stackoverflow|Ways to iterate over a list in Java|java loops collections iteration
+java write file|2885173|stackoverflow|How do I create a file and write to it in Java?|java file-io
+json comments|244777|stackoverflow|Can comments be used in JSON?|json comments
+json proper content type|477816|stackoverflow|What is the correct JSON content type?|json http-headers content-type
+linux check if port open|309052|serverfault|Check if port is open or closed on a Linux server?|linux port telnet
+linux find files with specific text|16956810|stackoverflow|How do I find all files containing specific text on Linux?|linux text grep directory find
+ping specific port|309357|serverfault|Ping a Specific Port|ping
+psql list all databases and tables|1285|dba|How do I list all databases and tables using psql?|postgresql tools psql command-line
+python add new keys to dictionary|1024847|stackoverflow|Add new keys to a dictionary?|python dictionary lookup
+python aes decryption|12524994|stackoverflow|Encrypt & Decrypt using PyCrypto AES 256|python encryption padding pycrypto initialization-vector
+python call external command|89228|stackoverflow|Calling an external command from Python|python shell terminal subprocess command
+python check if list empty|53513|stackoverflow|How do I check if a list is empty?|python list
+python clone list|2612802|stackoverflow|How to clone or copy a list?|python list copy clone
+python contains string|3437059|stackoverflow|Does Python have a string 'contains' substring method?|python string substring contains
+python convert int to bytes|21017698|stackoverflow|Converting int to bytes in Python 3|python python-3.x
+python google sheets api|38245714|stackoverflow|Get list of sheets and latest sheet in google spreadsheet api v4 in Python|python google-spreadsheet-api google-sheets-api
+python opencv draw rectangle|23720875|stackoverflow|How to draw a rectangle around a region of interest in python|python opencv computer-vision draw
+python parse csv|12296585|stackoverflow|Python Parse CSV Correctly|python parsing csv
+python parse float|379906|stackoverflow|How do I parse a string to a float or int?|python parsing floating-point type-conversion integer
+python parse json|2835559|stackoverflow|Why can't Python parse this JSON data?|python json parsing
+python pdf extract text|15583535|stackoverflow|How to extract text from a PDF file in Python?|python pypdf
+python read wav file|2060628|stackoverflow|Reading *.wav files in Python|python audio wav wave
+python sort dictionary by value|613183|stackoverflow|How do I sort a dictionary by value?|python sorting dictionary
+python staticmethod vs classmethod|136097|stackoverflow|Difference between staticmethod and classmethod|python oop methods python-decorators
+python utc to localtime|4770297|stackoverflow|Convert UTC datetime string to local datetime|python datetime utc localtime
+python yield generator|231767|stackoverflow|What does the "yield" keyword do?|python iterator generator yield coroutine
+restful programming|671118|stackoverflow|What exactly is RESTful programming?|http rest definition
+rest put vs post|630453|stackoverflow|PUT vs. POST in REST|http rest post put
+ruby shell command|2232|stackoverflow|Calling shell commands from Ruby|ruby shell interop
+ruby switch statement|948135|stackoverflow|How to write a switch statement in Ruby|ruby switch-statement conditional-statements
+scp recursive copy directories|264595|serverfault|Can scp copy directories recursively?|linux scp
+server room burning|496139|serverfault|Something is burning in the server room; how can I quickly identify what it is?|hardware
+sftp port|74176|serverfault|What port does SFTP use?|sftp
+ssh automate script with password|241588|serverfault|How to automate SSH login with password?|ssh password automation
+ssh diff|59140|serverfault|How do diff over ssh?|diff
+svd for pca|134282|stats|Relationship between SVD and PCA. How to use SVD to perform PCA?|pca dimensionality-reduction matrix svd
+tensorflow install ubuntu 14.04|41875915|stackoverflow|Install tensorflow on Ubuntu 14.04|python python-2.7 ubuntu tensorflow pip
+ubuntu print current version|12493|askubuntu|How can I find the version of Ubuntu that is installed?|versions release-management
+ubuntu install xfce|116602|askubuntu|How to install Xfce desktop environment?|xfce
+unzip zip file terminal|86849|askubuntu|How to unzip a zip file from the Terminal?|command-line zip
+vi copy text clipboard|84|vi|How can I copy text to the system clipboard from Vim?|cut-copy-paste os-clipboard
+windows check cpu temperature|395434|superuser|How can I check the temperature of my CPU in Windows?|windows cpu temperature
+windows compare pdf files|46123|superuser|How to compare the differences between two PDF files on Windows?|windows pdf file-comparison
+windows ctrl+alt+delete remote desktop|57222|serverfault|How to send ctrl+alt+del using Remote Desktop?|windows remote-desktop
+windows list running processes command line|914782|superuser|How do you list all processes on the command line in Windows?|windows command-line
+windows sudo|9652720|stackoverflow|How to run 'sudo' command in windows|windows
+windows wireless keyboard toaster|792607|superuser|Why does Windows think that my wireless keyboard is a toaster?|windows-7 device-manager
