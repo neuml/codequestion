@@ -32,15 +32,15 @@ The model will be stored in ~/.codequestion/
 
 The model can also be manually installed if the machine doesn't have direct internet access. Pre-trained models are pulled from the [github release page](https://github.com/neuml/codequestion/releases)
 
-    unzip codequestion-model.zip ~/.codequestion
+    unzip cqmodel.zip ~/.codequestion
 
 It is possible for codequestion to be customized to run against a custom question-answer repository and more will come on that in the future. At this time, only the Stack Exchange model is supported. 
 
 ### Running queries
 
-The easiest way to run queries is to start a codequestion shell
+The fastest way to run queries is to start a codequestion shell
 
-    python -m codequestion.shell
+    codequestion
 
 A prompt will come up. Queries can be typed directly into the console.
 

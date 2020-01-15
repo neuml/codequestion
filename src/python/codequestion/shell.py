@@ -27,5 +27,12 @@ class Shell(Cmd):
     def default(self, line):
         Query.query(self.embeddings, self.db, line)
 
-if __name__ == "__main__":
+def main():
+    """
+    Shell execution loop.
+    """
+
     Shell().cmdloop()
+
+if __name__ == "__main__":
+    main()

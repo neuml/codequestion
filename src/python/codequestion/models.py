@@ -11,16 +11,25 @@ class Models(object):
     """
 
     @staticmethod
-    def basePath():
+    def basePath(create=False):
         """
         Base data path - ~/.codequestion
+
+        Args:
+            create: if directory should be created
 
         Returns:
             path
         """
 
         # Get model cache path
-        return os.path.join(os.path.expanduser("~"), ".codequestion")
+        path = os.path.join(os.path.expanduser("~"), ".codequestion")
+
+        # Create directory if required
+        if create:
+            os.makedirs(path, exist_ok=True)
+
+        return path
 
     @staticmethod
     def modelPath(name, create=False):
