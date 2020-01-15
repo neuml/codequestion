@@ -35,7 +35,8 @@ setup(name="codequestion",
           "numpy>=1.17.4",
           "pymagnitude>=0.1.120",
           "scikit-learn>=0.22.1",
-          "scipy>=1.4.1"
+          "scipy>=1.4.1",
+          "tqdm==4.40.2"
       ],
       classifiers=[
           "License :: OSI Approved :: MIT License",

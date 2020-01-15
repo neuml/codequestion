@@ -100,3 +100,12 @@ Models scored using Pearson Correlation
 | ParaNMT - BM25  | Train         | 82.6  | 78.1  |
 | FastText - BM25 | Train         | 79.8  | 72.7  |
 | SE 300d - BM25  | Train         | 77.0  | 69.1  |
+
+### Testing
+To reproduce the tests above, you need to download the test data into ~/.codequestion/test
+
+    mkdir -p ~/.codequestion/test/stackexchange
+    wget https://raw.githubusercontent.com/neuml/codequestion/master/test/stackexchange/query.txt -P ~/.codequestion/test/stackexchange
+    wget http://ixa2.si.ehu.es/stswiki/images/4/48/Stsbenchmark.tar.gz
+    tar -C ~/.codequestion/test -xvzf Stsbenchmark.tar.gz
+    python -m codequestion.evaluate

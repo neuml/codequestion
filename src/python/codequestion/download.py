@@ -3,6 +3,7 @@ Download module
 """
 
 import os.path
+import tempfile
 import zipfile
 
 from urllib.request import urlopen
@@ -52,14 +53,14 @@ class Download(object):
 
         # Get base models path
         path = Models.basePath(True)
-        dest = os.path.join(path, os.path.basename(url))
+        dest = os.path.join(tempfile.gettempdir(), os.path.basename(url))
 
         print("Downloading model from %s to %s" % (url, dest))
 
         # Download file
         Download.download(url, dest)
 
-        print("\nDecompressing model")
+        print("Decompressing model to %s" % path)
 
         # Ensure file was downloaded successfully
         if os.path.exists(dest):
@@ -69,4 +70,4 @@ class Download(object):
         print("Download complete")
 
 if __name__ == "__main__":
-    Download.run("file:///tmp/cqmodel.zip")
+    Download.run("https://github.com/neuml/codequestion/releases/download/v1.0.0/cqmodel.zip")

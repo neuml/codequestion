@@ -125,6 +125,10 @@ class Query(object):
             print("Loading model from %s" % path)
             embeddings = Embeddings()
             embeddings.load(path)
+        else:
+            print("ERROR: loading model: ensure model is installed")
+            print("ERROR: Pre-trained model can be installed by running python -m codequestion.download")
+            raise FileNotFoundError("Unable to load codequestion model from %s" % path)
 
         # Connect to database file
         db = sqlite3.connect(dbfile)
