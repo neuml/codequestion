@@ -45,8 +45,8 @@ def run(infile, outfile):
                     answer = parse(r"AcceptedAnswerId=\"([0-9]+)\"", line)
                     score = parse(r"Score=\"([0-9]+)\"", line)
 
-                    # Require a score of 5+.
-                    if score >= 5:
+                    # Require a score of 10+.
+                    if score >= 10:
                         # Add answer id to ids list
                         ids.add(answer)
 
