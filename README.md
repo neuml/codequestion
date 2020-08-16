@@ -108,4 +108,4 @@ To reproduce the tests above, you need to download the test data into ~/.codeque
     wget https://raw.githubusercontent.com/neuml/codequestion/master/test/stackexchange/query.txt -P ~/.codequestion/test/stackexchange
     wget http://ixa2.si.ehu.es/stswiki/images/4/48/Stsbenchmark.tar.gz
     tar -C ~/.codequestion/test -xvzf Stsbenchmark.tar.gz
-    python -m codequestion.evaluate
+    python -m codequestion.evaluate -s test
