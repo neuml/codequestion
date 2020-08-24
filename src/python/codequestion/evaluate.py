@@ -11,8 +11,8 @@ import sqlite3
 
 from scipy.stats import pearsonr, spearmanr
 
-# pylint: disable = E0401
-from .embeddings import Embeddings
+from txtai.embeddings import Embeddings
+
 from .models import Models
 from .tokenizer import Tokenizer
 

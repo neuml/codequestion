@@ -1,7 +1,6 @@
-codequestion: Ask coding questions directly from the terminal
-======
+# codequestion: Ask coding questions directly from the terminal
 
-codequestion is a Python terminal program that allows an user to ask coding questions directly from the terminal. Many developers will have a web browser window open while they develop and run web searches as questions arise. codequestion attempts to make that process faster so you can focus on development.
+codequestion is a Python application that allows a user to ask coding questions directly from the terminal. Many developers will have a web browser window open while they develop and run web searches as questions arise. codequestion attempts to make that process faster so you can focus on development.
 
 The default model for codequestion is built off the [Stack Exchange Dumps on archive.org](https://archive.org/details/stackexchange). codequestion runs locally against a pre-trained model using data from Stack Exchange. No network connection is required once installed. The model executes similarity queries to find similar questions to the input query. 
 
@@ -9,20 +8,18 @@ An example of how codequestion works is shown below:
 
 ![demo](https://raw.githubusercontent.com/neuml/codequestion/master/demo.gif)
 
-### Installation
+## Installation
 The easiest way to install is via pip and PyPI
 
     pip install codequestion
 
-You can also use Git to clone the repository from GitHub and install it manually:
+You can also install codequestion directly from GitHub. Using a Python Virtual Environment is recommended.
 
-    git clone https://github.com/neuml/codequestion.git
-    cd codequestion
-    pip install .
+    pip install https://github.com/neuml/codequestion
 
-Python 3.5+ is supported
+Python 3.6+ is supported
 
-### Downloading a model
+## Downloading a model
 
 Once codequestion is installed, a model needs to be downloaded.
 
@@ -36,7 +33,7 @@ The model can also be manually installed if the machine doesn't have direct inte
 
 It is possible for codequestion to be customized to run against a custom question-answer repository and more will come on that in the future. At this time, only the Stack Exchange model is supported. 
 
-### Running queries
+## Running queries
 
 The fastest way to run queries is to start a codequestion shell
 
@@ -44,15 +41,10 @@ The fastest way to run queries is to start a codequestion shell
 
 A prompt will come up. Queries can be typed directly into the console.
 
-### Technical overview
-The full source code for codequestion is available on github. Code is licensed under the MIT license.
-
-    git clone https://github.com/neuml/codequestion.git
-    cd codequestion
-
+## Tech overview
 The following is an overview of how this project works. 
 
-#### Processing the raw data dumps
+### Processing the raw data dumps
 The raw 7z XML dumps from Stack Exchange are processed through a series of steps. Only highly scored questions with answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.
 
 *questions.db schema*
@@ -68,15 +60,15 @@ The raw 7z XML dumps from Stack Exchange are processed through a series of steps
     AnswerUser TEXT
     Reference TEXT
 
-#### Indexing
+### Indexing
 codequestion builds a sentence embeddings index for questions.db. Each question in the questions.db schema is tokenized and resolved to a word embedding. The word embedding model is a custom fastText model built on questions.db. Once each token is converted to word embeddings, a weighted sentence embedding is created. Word embeddings are weighed using a BM25 index over all the tokens in the repository, with one modification. Tags are used to boost the weights of tag tokens.
 
 Once questions.db is converted to a collection of sentence embeddings, they are normalized and stored in faiss, which allows for fast similarity searches.
 
-#### Querying
+### Querying
 codequestion tokenizes each query using the same method as during indexing. Those tokens are used to build a sentence embedding. That embedding is queried against the faiss index to find the most similar questions. 
 
-#### Model accuracy
+### Model accuracy
 The following sections show test results for various word vector/scoring combinations. SE 300d word vectors with BM25 scoring does the best against this dataset. Even with the reduced vocabulary of < 1M Stack Exchange questions, SE 300d - BM25 does reasonably well against the STS Benchmark.
 
 **StackExchange Query**
@@ -101,7 +93,7 @@ Models scored using Pearson Correlation
 | FastText - BM25 | Train         | 79.8  | 72.7  |
 | SE 300d - BM25  | Train         | 77.0  | 69.1  |
 
-### Testing
+## Testing
 To reproduce the tests above, you need to download the test data into ~/.codequestion/test
 
     mkdir -p ~/.codequestion/test/stackexchange

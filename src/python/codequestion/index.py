@@ -5,8 +5,8 @@ Indexing module
 import os.path
 import sqlite3
 
-# pylint: disable = E0401
-from .embeddings import Embeddings
+from txtai.embeddings import Embeddings
+
 from .models import Models
 from .tokenizer import Tokenizer
 

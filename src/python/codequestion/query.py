@@ -10,8 +10,8 @@ import sys
 import html2text
 import mdv
 
-# pylint: disable = E0401
-from .embeddings import Embeddings
+from txtai.embeddings import Embeddings
+
 from .models import Models
 from .tokenizer import Tokenizer
 

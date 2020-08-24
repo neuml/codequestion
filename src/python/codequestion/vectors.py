@@ -7,12 +7,8 @@ import os.path
 import sqlite3
 import tempfile
 
-import fasttext
-import fasttext.util
+from txtai.vectors import WordVectors
 
-# pylint: disable=E0401,E0611
-# Defined at runtime
-from .magnitude import converter
 from .models import Models
 from .tokenizer import Tokenizer
 
@@ -135,35 +131,17 @@ class Vectors(object):
         # Stream tokens to temporary file
         tokens = Vectors.tokens(dbfile)
 
-        # Train on tokens file using largest dimension size
-        model = fasttext.train_unsupervised(tokens, dim=size, minCount=mincount)
+        # Stream tokens to temporary file
+        tokens = Vectors.tokens(dbfile)
+
+        # Output file path
+        path = Models.vectorPath("stackexchange-%dd" % size, True)
+
+        # Build word vectors model
+        WordVectors.build(tokens, size, mincount, path)
 
         # Remove temporary tokens file
         os.remove(tokens)
-
-        # Output file path
-        print("Building %d dimension model" % size)
-        path = Models.vectorPath("stackexchange-%dd" %size, True)
-
-        # Output vectors in vec/txt format
-        with open(path + ".txt", "w") as output:
-            words = model.get_words()
-            output.write("%d %d\n" % (len(words), model.get_dimension()))
-
-            for word in words:
-                # Skip end of line token
-                if word != "</s>":
-                    vector = model.get_word_vector(word)
-                    data = ""
-                    for v in vector:
-                        data += " " + str(v)
-
-                    output.write(word + data + "\n")
-
-        # Convert and delete tokens, text vectors
-        print("Converting file to magnitude format")
-        converter.convert(path + ".txt", path + ".magnitude", subword=True)
-        os.remove(path + ".txt")
 
 if __name__ == "__main__":
     # Resolve questions.db path and run

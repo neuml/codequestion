@@ -10,7 +10,6 @@ from urllib.request import urlopen
 
 from tqdm import tqdm
 
-# pylint: disable = E0401
 from .models import Models
 
 class Download(object):
