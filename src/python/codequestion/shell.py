@@ -15,6 +15,7 @@ class Shell(Cmd):
     prompt = "(cqq) "
     embeddings = None
     db = None
+    lang = None
 
     def preloop(self):
         # Load embeddings and questions.db
@@ -25,7 +26,19 @@ class Shell(Cmd):
             self.db.close()
 
     def default(self, line):
-        Query.query(self.embeddings, self.db, line)
+        Query.query(self.embeddings, self.db, "%s %s" % (self.lang, line) if self.lang else line)
+
+    def do_lang(self, lang):
+        """
+        Sets the default programming language for this session. All queries will have the language
+        prepended to the query.
+
+        Args:
+            lang: language
+        """
+
+        self.lang = lang
+        print("Set language to %s" % lang)
 
 def main():
     """
