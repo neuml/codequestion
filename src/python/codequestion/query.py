@@ -2,10 +2,10 @@
 Query module
 """
 
+import argparse
 import os
 import os.path
 import sqlite3
-import sys
 
 import html2text
 import mdv
@@ -182,13 +182,32 @@ class Query(object):
         db.close()
 
     @staticmethod
-    def run(query):
+    def args():
+        """
+        Parses command line arguments.
+
+        Returns:
+            command line arguments
+        """
+
+        parser = argparse.ArgumentParser(description="codequestion query")
+
+        parser.add_argument("-l", "--lang", help="Sets default language")
+        parser.add_argument("-q", "--query", required=True, help="Query to execute")
+
+        return parser.parse_args()
+
+    @staticmethod
+    def run():
         """
         Executes a query against a codequestion index.
-
-        Args:
-            query: input query
         """
+
+        # Parse command line arguments
+        args = Query.args()
+
+        # Build query
+        query = "%s %s" % (args.lang, args.query) if args.lang else args.query
 
         # Load model
         embeddings, db = Query.load()
@@ -200,5 +219,4 @@ class Query(object):
         Query.close(db)
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        Query.run(sys.argv[1])
+    Query.run()
