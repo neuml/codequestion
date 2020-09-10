@@ -15,7 +15,7 @@ The easiest way to install is via pip and PyPI
 
 You can also install codequestion directly from GitHub. Using a Python Virtual Environment is recommended.
 
-    pip install https://github.com/neuml/codequestion
+    pip install git+https://github.com/neuml/codequestion
 
 Python 3.6+ is supported
 
@@ -27,7 +27,7 @@ Once codequestion is installed, a model needs to be downloaded.
 
 The model will be stored in ~/.codequestion/
 
-The model can also be manually installed if the machine doesn't have direct internet access. Pre-trained models are pulled from the [github release page](https://github.com/neuml/codequestion/releases)
+The model can also be manually installed if the machine doesn't have direct internet access. Pre-trained models are pulled from the [GitHub release page](https://github.com/neuml/codequestion/releases)
 
     unzip cqmodel.zip ~/.codequestion
 
@@ -45,7 +45,7 @@ A prompt will come up. Queries can be typed directly into the console.
 The following is an overview of how this project works. 
 
 ### Processing the raw data dumps
-The raw 7z XML dumps from Stack Exchange are processed through a series of steps. Only highly scored questions with answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.
+The raw 7z XML dumps from Stack Exchange are processed through a series of steps (see [building a model](#building-a-model)). Only highly scored questions with answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.
 
 *questions.db schema*
 
@@ -61,14 +61,73 @@ The raw 7z XML dumps from Stack Exchange are processed through a series of steps
     Reference TEXT
 
 ### Indexing
-codequestion builds a sentence embeddings index for questions.db. Each question in the questions.db schema is tokenized and resolved to a word embedding. The word embedding model is a custom fastText model built on questions.db. Once each token is converted to word embeddings, a weighted sentence embedding is created. Word embeddings are weighed using a BM25 index over all the tokens in the repository, with one modification. Tags are used to boost the weights of tag tokens.
+codequestion builds a sentence embeddings index for questions.db. Each question in the questions.db schema is tokenized and resolved to word embeddings. The word embedding model is a custom fastText model built on questions.db. Once each token is converted to word embeddings, a weighted sentence embedding is created. Word embeddings are weighed using a BM25 index over all the tokens in the repository, with one important modification. Tags are used to boost the weights of tag tokens.
 
-Once questions.db is converted to a collection of sentence embeddings, they are normalized and stored in faiss, which allows for fast similarity searches.
+Once questions.db is converted to a collection of sentence embeddings, they are normalized and stored in Faiss, which allows for fast similarity searches.
 
 ### Querying
-codequestion tokenizes each query using the same method as during indexing. Those tokens are used to build a sentence embedding. That embedding is queried against the faiss index to find the most similar questions. 
+codequestion tokenizes each query using the same method as during indexing. Those tokens are used to build a sentence embedding. That embedding is queried against the Faiss index to find the most similar questions.
 
-### Model accuracy
+## Building a model
+The following steps show how to build a codequestion model using Stack Exchange archives.
+
+_This is not necessary if using the pre-trained models from the [GitHub release page](https://github.com/neuml/codequestion/releases)_
+
+1.) Download files from Stack Exchange: https://archive.org/details/stackexchange
+
+2.) Place selected files into a directory structure like shown below (current process requires all these files).
+
+- stackexchange/ai/ai.stackexchange.com.7z
+- stackexchange/android/android.stackexchange.com.7z
+- stackexchange/apple/apple.stackexchange.com.7z
+- stackexchange/arduino/arduino.stackexchange.com.7z
+- stackexchange/askubuntu/askubuntu.com.7z
+- stackexchange/avp/avp.stackexchange.com.7z
+- stackexchange/codereview/codereview.stackexchange.com.7z
+- stackexchange/cs/cs.stackexchange.com.7z
+- stackexchange/datascience/datascience.stackexchange.com.7z
+- stackexchange/dba/dba.stackexchange.com.7z
+- stackexchange/devops/devops.stackexchange.com.7z
+- stackexchange/dsp/dsp.stackexchange.com.7z
+- stackexchange/raspberrypi/raspberrypi.stackexchange.com.7z
+- stackexchange/reverseengineering/reverseengineering.stackexchange.com.7z
+- stackexchange/scicomp/scicomp.stackexchange.com.7z
+- stackexchange/security/security.stackexchange.com.7z
+- stackexchange/serverfault/serverfault.com.7z
+- stackexchange/stackoverflow/stackoverflow.com-Posts.7z
+- stackexchange/stats/stats.stackexchange.com.7z
+- stackexchange/superuser/superuser.com.7z
+- stackexchange/unix/unix.stackexchange.com.7z
+- stackexchange/vi/vi.stackexchange.com.7z
+- stackexchange/wordpress/wordpress.stackexchange.com.7z
+
+3.) Run the ETL process
+
+```bash
+python -m codequestion.etl.stackexchange.execute stackexchange
+```
+
+This will create the file ~/.codequestion/models/stackexchange/questions.db
+
+4.) Build word vectors
+
+Currently, the model is using BM25 + fastText for indexing.
+
+```bash
+python -m codequestion.vectors
+```
+
+This will create the file ~/.codequestion/vectors/stackexchange-300d.magnitude
+
+5.) Build index
+
+```bash
+python -m codequestion.index
+```
+
+After this step, the index is created and all necessary files are ready to query.
+
+## Model accuracy
 The following sections show test results for various word vector/scoring combinations. SE 300d word vectors with BM25 scoring does the best against this dataset. Even with the reduced vocabulary of < 1M Stack Exchange questions, SE 300d - BM25 does reasonably well against the STS Benchmark.
 
 **StackExchange Query**
