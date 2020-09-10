@@ -39,7 +39,7 @@ class Index(object):
 
             count += 1
             if count % 1000 == 0:
-                print("Streamed %d documents" % (count))
+                print("Streamed %d documents" % (count), end="\r")
 
             # Skip documents with no tokens parsed
             if tokens:
@@ -56,7 +56,7 @@ class Index(object):
         Builds a sentence embeddings index.
 
         Args:
-            dbfile: input SQLite fil
+            dbfile: input SQLite file
 
         Returns:
             embeddings index
@@ -64,10 +64,11 @@ class Index(object):
 
         embeddings = Embeddings({"path": Models.vectorPath("stackexchange-300d.magnitude"),
                                  "scoring": "bm25",
-                                 "pca": 3})
+                                 "pca": 3,
+                                 "quantize": True})
 
         # Build scoring index if scoring method provided
-        if embeddings.config["scoring"]:
+        if embeddings.config.get("scoring"):
             embeddings.score(Index.stream(dbfile))
 
         # Build embeddings index

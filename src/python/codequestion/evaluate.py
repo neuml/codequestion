@@ -176,7 +176,7 @@ class STS(object):
                 print("Skipping all stop word string: ", row)
 
         # Build scoring index if scoring method provided
-        if embeddings.config["scoring"]:
+        if embeddings.config.get("scoring"):
             embeddings.score(documents)
 
         # Build embeddings index
@@ -211,7 +211,7 @@ class STS(object):
             tokens2 = Tokenizer.tokenize(row[3])
 
             if tokens1 and tokens2:
-                score = embeddings.similarity(tokens1, tokens2)
+                score = embeddings.similarity(tokens1, [tokens2])[0]
                 scores.append(score)
 
                 # Ground truth score normalized between 0 - 1

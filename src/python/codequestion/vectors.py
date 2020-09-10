@@ -77,7 +77,7 @@ class RowIterator(object):
 
             count += 1
             if count % 1000 == 0:
-                print("Streamed %d documents" % (count))
+                print("Streamed %d documents" % (count), end="\r")
 
             # Skip documents with no tokens parsed
             if tokens:
@@ -127,9 +127,6 @@ class Vectors(object):
             size: dimensions for fastText model
             mincount: minimum number of times a token must appear in input
         """
-
-        # Stream tokens to temporary file
-        tokens = Vectors.tokens(dbfile)
 
         # Stream tokens to temporary file
         tokens = Vectors.tokens(dbfile)

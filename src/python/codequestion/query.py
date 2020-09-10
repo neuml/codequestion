@@ -100,11 +100,11 @@ class Query(object):
         # Flatten question object to string for searching
         question = Tokenizer.tokenize(question[0] + " " + question[1] + " " + question[2])
 
-        match = True
+        match = False
         for token in query:
-            # Look for tag tokens and require all those tag tokens to be in the matching question
-            if token in tags and token not in question:
-                match = False
+            # Require matching token or tag
+            if token in tags or token in question:
+                match = True
                 break
 
         return match
