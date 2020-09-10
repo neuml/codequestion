@@ -63,6 +63,7 @@ class Index(object):
         """
 
         embeddings = Embeddings({"path": Models.vectorPath("stackexchange-300d.magnitude"),
+                                 "storevectors": True,
                                  "scoring": "bm25",
                                  "pca": 3,
                                  "quantize": True})
