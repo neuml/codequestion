@@ -69,4 +69,4 @@ class Download(object):
         print("Download complete")
 
 if __name__ == "__main__":
-    Download.run("https://github.com/neuml/codequestion/releases/download/v1.0.0/cqmodel.zip")
+    Download.run("https://github.com/neuml/codequestion/releases/download/v1.1.0/cqmodel.zip")
