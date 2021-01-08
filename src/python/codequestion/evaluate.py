@@ -211,7 +211,7 @@ class STS(object):
             tokens2 = Tokenizer.tokenize(row[3])
 
             if tokens1 and tokens2:
-                score = embeddings.similarity(tokens1, [tokens2])[0]
+                score = embeddings.similarity(tokens1, [tokens2])[0][1]
                 scores.append(score)
 
                 # Ground truth score normalized between 0 - 1

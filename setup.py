@@ -31,7 +31,7 @@ setup(name="codequestion",
           "html2text>=2020.1.16",
           "mdv>=1.7.4",
           "tqdm==4.48.0",
-          "txtai>=1.2.0"
+          "txtai>=2.0.0"
       ],
       classifiers=[
           "License :: OSI Approved :: Apache Software License",
