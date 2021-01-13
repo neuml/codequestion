@@ -19,7 +19,7 @@ You can also install codequestion directly from GitHub. Using a Python Virtual E
 
 Python 3.6+ is supported
 
-Check out [troubleshooting link](https://github.com/neuml/txtai#troubleshooting) to help resolve environment-specific install issues.
+See [this link](https://github.com/neuml/txtai#installation) to help resolve environment-specific install issues.
 
 ## Downloading a model
 
