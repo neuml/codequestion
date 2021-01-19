@@ -1,4 +1,12 @@
-# codequestion: Ask coding questions directly from the terminal
+<p align="center">
+    <img src="https://raw.githubusercontent.com/neuml/codequestion/master/logo.png"/>
+</p>
+
+<h3 align="center">
+    <p>Ask coding questions directly from the terminal</p>
+</h3>
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 codequestion is a Python application that allows a user to ask coding questions directly from the terminal. Many developers will have a web browser window open while they develop and run web searches as questions arise. codequestion attempts to make that process faster so you can focus on development.
 
