@@ -28,7 +28,7 @@ setup(name="codequestion",
           ],
       },
       install_requires=[
-          "html2text>=2020.1.16",
+          "html2markdown>=0.1.7",
           "mdv>=1.7.4",
           "tqdm==4.48.0",
           "txtai>=2.0.0"
