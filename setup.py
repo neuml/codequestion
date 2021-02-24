@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
     DESCRIPTION = f.read()
 
 setup(name="codequestion",
-      version="1.2.0",
+      version="1.3.0",
       author="NeuML",
       description="Ask coding questions directly from the terminal",
       long_description=DESCRIPTION,
