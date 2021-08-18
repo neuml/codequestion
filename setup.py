@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
     DESCRIPTION = f.read()
 
 setup(name="codequestion",
-      version="1.3.0",
+      version="1.4.0",
       author="NeuML",
       description="Ask coding questions directly from the terminal",
       long_description=DESCRIPTION,
@@ -31,7 +31,7 @@ setup(name="codequestion",
           "html2markdown>=0.1.7",
           "mdv>=1.7.4",
           "tqdm==4.48.0",
-          "txtai>=2.0.0"
+          "txtai[similarity]>=3.2.0"
       ],
       classifiers=[
           "License :: OSI Approved :: Apache Software License",
