@@ -29,66 +29,66 @@ git discard unstaged changes|52704|stackoverflow|How do I discard unstaged chang
 git pull vs fetch|292357|stackoverflow|What is the difference between 'git pull' and 'git fetch'?|git version-control git-pull git-fetch
 git undo most recent local commit|927358|stackoverflow|How do I undo the most recent local commits in Git?|git version-control git-commit undo pre-commit
 java fix nullpointerexception|218384|stackoverflow|What is a NullPointerException, and how do I fix it?|java nullpointerexception
-java generate random number|5887709|stackoverflow|Getting random numbers in Java|java random
-java hashmap vs hashtable|40471|stackoverflow|Differences between HashMap and Hashtable?|java collections hashmap hashtable
+java get random number|5887709|stackoverflow|Getting random numbers in Java|java random
+java hashmap vs hashtable|40471|stackoverflow|What are the differences between a HashMap and a Hashtable in Java?|java collections hashmap hashtable
 java heap space error|37335|stackoverflow|How to deal with "java.lang.OutOfMemoryError: Java heap space" error?|java java-ee jvm out-of-memory heap-memory
 java outofmemoryerror poi|6069847|stackoverflow|java.lang.OutOfMemoryError: Java heap space while reading excel with Apache POI|java apache-poi
-java parse date|999172|stackoverflow|How to parse a date?|java date simpledateformat
+java print date|26717733|stackoverflow|print current date in java|java time
 java round decimal|11701399|stackoverflow|round up to 2 decimal places in java?|java
 javascript check if string contains substring|1789945|stackoverflow|How to check whether a string contains a substring in JavaScript?|javascript string substring string-matching
 javascript create timestamp|221294|stackoverflow|How do you get a timestamp in JavaScript?|javascript date datetime timestamp unix-timestamp
 javascript encode url|332872|stackoverflow|Encode URL in JavaScript?|javascript url encoding
 javascript for-each in array|9329446|stackoverflow|For-each over an array in JavaScript?|javascript arrays loops foreach iteration
 javascript generate uuid|105034|stackoverflow|Create GUID / UUID in JavaScript?|javascript guid uuid
-javascript html5 local storage add object|2010892|stackoverflow|Storing Objects in HTML5 localStorage|javascript html5 local-storage
+javascript html5 local storage add object|2010892|stackoverflow|How to store objects in HTML5 localStorage/sessionStorage|javascript html local-storage
 javascript include file in another file|950087|stackoverflow|How do I include a JavaScript file in another JavaScript file?|javascript file import include
 javascript redirect to another website|503093|stackoverflow|How do I redirect to another webpage?|javascript jquery redirect
-javascript remove element from array|5767325|stackoverflow|How do I remove a particular element from an array in JavaScript?|javascript arrays
-javascript replace all occurrences in string|1144783|stackoverflow|How to replace all occurrences of a string?|javascript string replace
-javascript validate email address|46155|stackoverflow|How to validate an email address in JavaScript|javascript regex validation email email-validation
-java sorted array faster|11227809|stackoverflow|Why is processing a sorted array faster than processing an unsorted array?|java c++ performance optimization branch-prediction
-java split string|3481828|stackoverflow|How to split a string in Java|java string
+javascript remove element from array|5767325|stackoverflow|How can I remove a specific item from an array?|javascript arrays
+javascript replace all occurrences in string|1144783|stackoverflow|How do I replace all occurrences of a string in JavaScript?|javascript string replace
+javascript validate email address|46155|stackoverflow|How can I validate an email address in JavaScript?|javascrit html regex email-validation
+java array sort|8938235|stackoverflow|Sort an array in Java|java arrays
+java split string|3481828|stackoverflow|How do I split a string in Java?|java string split
 java stringbuilder vs stringbuffer|355089|stackoverflow|Difference between StringBuilder and StringBuffer|java stringbuilder stringbuffer
 java string to int|5585779|stackoverflow|How do I convert a String to an int in Java?|java string int type-conversion
-java wait vs sleep|1036754|stackoverflow|Difference between wait() and sleep()|java multithreading sleep java-threads
+java wait vs sleep|1036754|stackoverflow|Difference between "wait()" and "sleep()" in Java|java multithreading wait sleep java-threads
 java ways to iterate list|18410035|stackoverflow|Ways to iterate over a list in Java|java loops collections iteration
 java write file|2885173|stackoverflow|How do I create a file and write to it in Java?|java file-io
 json comments|244777|stackoverflow|Can comments be used in JSON?|json comments
-json proper content type|477816|stackoverflow|What is the correct JSON content type?|json http-headers content-type
+json proper content type|477816|stackoverflow|Which JSON content type do I use?|json mime-types content-type
 linux check if port open|309052|serverfault|Check if port is open or closed on a Linux server?|linux port telnet
-linux find files with specific text|16956810|stackoverflow|How do I find all files containing specific text on Linux?|linux text grep directory find
+linux find files with specific text|16956810|stackoverflow|How to find all files containing specific text (string) on Linux?|linux text grep directory find
 ping specific port|309357|serverfault|Ping a Specific Port|ping
 psql list all databases and tables|1285|dba|How do I list all databases and tables using psql?|postgresql tools psql command-line
-python add new keys to dictionary|1024847|stackoverflow|Add new keys to a dictionary?|python dictionary lookup
+python add new keys to dictionary|1024847|stackoverflow|How can I add new keys to a dictionary?|python dictionary lookup
 python aes decryption|12524994|stackoverflow|Encrypt & Decrypt using PyCrypto AES 256|python encryption padding pycrypto initialization-vector
-python call external command|89228|stackoverflow|Calling an external command from Python|python shell terminal subprocess command
+python call external script|9318581|stackoverflow|Python - how do I call external python programs?|python call external
 python check if list empty|53513|stackoverflow|How do I check if a list is empty?|python list
-python clone list|2612802|stackoverflow|How to clone or copy a list?|python list copy clone
+python clone list|2612802|stackoverflow|How do I clone a list so that it doesn't change unexpectedly after assignment?|python list reference copy clone
 python contains string|3437059|stackoverflow|Does Python have a string 'contains' substring method?|python string substring contains
 python convert int to bytes|21017698|stackoverflow|Converting int to bytes in Python 3|python python-3.x
-python google sheets api|38245714|stackoverflow|Get list of sheets and latest sheet in google spreadsheet api v4 in Python|python google-spreadsheet-api google-sheets-api
+python google sheets api|56084171|stackoverflow|Accessing Google Sheets Api with Python|stackoverflow python google-sheets-api
 python opencv draw rectangle|23720875|stackoverflow|How to draw a rectangle around a region of interest in python|python opencv computer-vision draw
 python parse csv|12296585|stackoverflow|Python Parse CSV Correctly|python parsing csv
 python parse float|379906|stackoverflow|How do I parse a string to a float or int?|python parsing floating-point type-conversion integer
-python parse json|2835559|stackoverflow|Why can't Python parse this JSON data?|python json parsing
+python parse json|7771011|stackoverflow|How to parse data in JSON format?|python json parsing
 python pdf extract text|15583535|stackoverflow|How to extract text from a PDF file in Python?|python pypdf
 python read wav file|2060628|stackoverflow|Reading *.wav files in Python|python audio wav wave
 python sort dictionary by value|613183|stackoverflow|How do I sort a dictionary by value?|python sorting dictionary
-python staticmethod vs classmethod|136097|stackoverflow|Difference between staticmethod and classmethod|python oop methods python-decorators
+python staticmethod vs classmethod|136097|stackoverflow|Difference between @staticmethod and @classmethod|python oop methods python-decorators
 python utc to localtime|4770297|stackoverflow|Convert UTC datetime string to local datetime|python datetime utc localtime
-python yield generator|231767|stackoverflow|What does the "yield" keyword do?|python iterator generator yield coroutine
-restful programming|671118|stackoverflow|What exactly is RESTful programming?|http rest definition
-rest put vs post|630453|stackoverflow|PUT vs. POST in REST|http rest post put
-ruby shell command|2232|stackoverflow|Calling shell commands from Ruby|ruby shell interop
+python yield generator|41136410|stackoverflow|Python `yield from`, or return a generator?|python function return generator
+restful programming|671118|stackoverflow|What is RESTful programming?|rest http architecture definition
+rest put vs post|630453|stackoverflow|What is the difference between POST and PUT in HTTP?|http rest post put
+ruby shell command|2232|stackoverflow|How to call shell commands from Ruby|ruby shell interop
 ruby switch statement|948135|stackoverflow|How to write a switch statement in Ruby|ruby switch-statement conditional-statements
 scp recursive copy directories|264595|serverfault|Can scp copy directories recursively?|linux scp
-server room burning|496139|serverfault|Something is burning in the server room; how can I quickly identify what it is?|hardware
+server room identify burning smell|496139|serverfault|Something is burning in the server room; how can I quickly identify what it is?|hardware
 sftp port|74176|serverfault|What port does SFTP use?|sftp
 ssh automate script with password|241588|serverfault|How to automate SSH login with password?|ssh password automation
 ssh diff|59140|serverfault|How do diff over ssh?|diff
-svd for pca|134282|stats|Relationship between SVD and PCA. How to use SVD to perform PCA?|pca dimensionality-reduction matrix svd
+svd for pca|134282|stats|Relationship between SVD and PCA. How to use SVD to perform PCA?|pca dimensionality-reduction matrix svd faq
 tensorflow install ubuntu 14.04|41875915|stackoverflow|Install tensorflow on Ubuntu 14.04|python python-2.7 ubuntu tensorflow pip
-ubuntu print current version|12493|askubuntu|How can I find the version of Ubuntu that is installed?|versions release-management
+ubuntu show current version|12493|askubuntu|How can I find the version of Ubuntu that is installed?|versions release-management
 ubuntu install xfce|116602|askubuntu|How to install Xfce desktop environment?|xfce
 unzip zip file terminal|86849|askubuntu|How to unzip a zip file from the Terminal?|command-line zip
 vi copy text clipboard|84|vi|How can I copy text to the system clipboard from Vim?|cut-copy-paste os-clipboard

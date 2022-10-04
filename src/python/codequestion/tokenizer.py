@@ -1,11 +1,12 @@
 """
-Text tokenization methods
+Tokenizer module
 """
 
 import re
 import string
 
-class Tokenizer(object):
+
+class Tokenizer:
     """
     Text tokenization methods
     """

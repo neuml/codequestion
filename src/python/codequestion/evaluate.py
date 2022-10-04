@@ -1,115 +1,130 @@
 """
-Evaluation methods to measure model performance
+Evaluate module
 """
 
 import argparse
 import csv
-import os
-import os.path
-import re
-import sqlite3
 
 from scipy.stats import pearsonr, spearmanr
-
+from tqdm import tqdm
 from txtai.embeddings import Embeddings
+from txtai.scoring import ScoringFactory
 
 from .models import Models
 from .tokenizer import Tokenizer
 
-class Command(object):
+
+class StackExchange:
     """
-    Command line parser
-    """
-
-    @staticmethod
-    def parse():
-        """
-        Parses command line arguments.
-        """
-
-        parser = argparse.ArgumentParser(description="Evaluate")
-        parser.add_argument("-s", "--source", required=True, help="data source", metavar="SOURCE")
-        parser.add_argument("-m", "--method", help="run method", metavar="METHOD")
-
-        return parser.parse_args()
-
-class StackExchange(object):
-    """
-    StackExchange query-answer dataset.
+    Stack Exchange query-answer dataset.
     """
 
-    @staticmethod
-    def load():
+    def __call__(self, args):
         """
-        Loads a questions database and pre-trained embeddings model
-
-        Returns:
-            (db, embeddings)
-        """
-
-        print("Loading model")
-
-        path = Models.modelPath("stackexchange")
-        dbfile = os.path.join(path, "questions.db")
-
-        # Connect to database file
-        db = sqlite3.connect(dbfile)
-
-        # Loading embeddings model
-        embeddings = Embeddings()
-        embeddings.load(path)
-
-        return db, embeddings
-
-    @staticmethod
-    def run(args):
-        """
-        Evaluates a pre-trained model against the StackExchange query-answer dataset.
+        Evaluates a pre-trained model against the Stack Exchange query-answer dataset.
 
         Args:
             args: command line arguments
         """
 
         # Load model
-        db, embeddings = StackExchange.load()
-        cur = db.cursor()
+        embeddings, scoring = self.load(), None
 
         # Statistics
         mrr = []
 
+        # Build scoring index
+        if args.method in ("bm25", "tfidf", "sif"):
+            scoring = ScoringFactory.create({"method": args.method, "content": True, "terms": True, "k1": 0.1})
+            scoring.index(self.stream(embeddings, "Building scoring index"))
+
         # Run test data
-        with open(Models.testPath("stackexchange", "query.txt")) as rows:
+        with open(Models.testPath("stackexchange", "query.txt"), encoding="utf-8") as rows:
             for row in rows:
                 query, sourceid, source, _ = row.split("|", 3)
                 print(query, sourceid, source)
 
-                # Lookup internal id for source id/source
-                cur.execute("SELECT Id FROM questions WHERE SourceId = ? and Source=?", [sourceid, source])
-                uid = cur.fetchone()
-                if uid:
-                    uid = uid[0]
+                # Run search
+                results = self.search(embeddings, scoring, query)
 
-                    # Get top 10 results
-                    if args.method in ("bm25", "tfidf"):
-                        sql = "SELECT Id from search WHERE search=? %s LIMIT 10" % ("ORDER BY BM25(search)" if args.method == "bm25" else "")
-                        cur.execute(sql, [re.sub(r"[^\w\s]", "", query)])
-                        uids = [row[0] for row in cur.fetchall()]
-                    else:
-                        # Tokenize query and run search against embeddings model
-                        query = Tokenizer.tokenize(query)
-                        uids = [uid for uid, _ in embeddings.search(query, 10)]
+                # Get row index within results
+                index = -1
+                for x, result in enumerate(results):
+                    if int(sourceid) == result["sourceid"] and source == result["source"]:
+                        index = x
 
-                    # Calculate stats
-                    calc = 1 / (1 + uids.index(uid)) if uid in uids else 0.0
-                    print(calc)
-                    mrr.append(calc)
+                # Calculate stats
+                calc = 1 / (1 + index) if index != -1 else 0.0
+                print(calc)
+                mrr.append(calc)
 
         mrr = sum(mrr) / len(mrr)
         print("Mean Reciprocal Rank = ", mrr)
 
-        db.close()
+    def load(self):
+        """
+        Loads a pre-trained embeddings model
 
-class STS(object):
+        Returns:
+            embeddings
+        """
+
+        # Loading embeddings model
+        embeddings = Embeddings()
+        embeddings.load(Models.modelPath("stackexchange"))
+
+        return embeddings
+
+    def stream(self, embeddings, message):
+        """
+        Streams content from an embeddings index. This method is a generator and will yield a row at time.
+
+        Args:
+            embeddings: embeddings index
+            message: progress bar message
+        """
+
+        offset, batch = 0, 1000
+        with tqdm(total=embeddings.count(), desc=message) as progress:
+            for offset in range(0, embeddings.count(), batch):
+                for result in embeddings.search(f"select id, text, tags, source, sourceid from txtai limit {batch} offset {offset}"):
+                    yield (result["id"], result, None)
+
+                progress.update(batch)
+
+    def search(self, embeddings, scoring, query):
+        """
+        Executes a search.
+
+        Args:
+            embeddings: embeddings instance
+            scoring: scoring instance
+            query: query to run
+
+        Returns:
+            search results
+        """
+
+        results = None
+        if scoring:
+            # Scoring models have data field with source id + source
+            results = [result["data"] for result in scoring.search(query, 10)]
+        elif embeddings.scoring:
+            # Use custom tokenizer for word vector models
+            uids = [row["id"] for row in embeddings.search(Tokenizer.tokenize(query), 10)]
+
+            # Get source id + source for each result
+            results = []
+            for uid in uids:
+                results.append(embeddings.search(f"select sourceid, source from txtai where id = {uid}")[0])
+        else:
+            # Select source id + source with standard similar clause
+            results = embeddings.search(f"select sourceid, source from txtai where similar('{query}') limit 10")
+
+        return results
+
+
+class STS:
     """
     STS Benchmark Dataset
     General text similarity
@@ -117,8 +132,59 @@ class STS(object):
     http://ixa2.si.ehu.es/stswiki/index.php/STSbenchmark
     """
 
-    @staticmethod
-    def read(path):
+    def __call__(self, args):
+        """
+        Test a list of vector models.
+
+        Args:
+            args: command line arguments
+        """
+
+        # Load embeddings instance - used to calculate similarity
+        embeddings = Embeddings()
+        embeddings.load(Models.modelPath("stackexchange"))
+
+        # Test model against sts dataset
+        self.test(args, embeddings)
+
+    def test(self, args, embeddings):
+        """
+        Tests input Embeddings model against STS benchmark data.
+
+        Args:
+            args: command line arguments
+            embeddings: Embeddings model
+        """
+
+        # Test file path
+        path = Models.testPath("stsbenchmark", f"sts-{'dev' if args.method == 'dev' else 'test'}.csv")
+
+        # Read test data
+        rows = self.read(path)
+
+        # Calculated scores and ground truth labels
+        scores = []
+        labels = []
+
+        for row in rows:
+            text1, text2 = row[2], row[3]
+
+            # Use custom tokenizer for word vector models
+            if embeddings.scoring:
+                text1 = Tokenizer.tokenize(text1)
+                text2 = Tokenizer.tokenize(text2)
+
+            if text1 and text2:
+                score = embeddings.similarity(text1, [text2])[0][1]
+                scores.append(score)
+
+                # Ground truth score normalized between 0 - 1
+                labels.append(row[1])
+
+        print("Pearson score =", pearsonr(scores, labels))
+        print("Spearman score =", spearmanr(scores, labels))
+
+    def read(self, path):
         """
         Reads a STS data file.
 
@@ -129,7 +195,7 @@ class STS(object):
             rows
         """
 
-        data = csv.reader(open(path), delimiter="\t", quoting=csv.QUOTE_NONE)
+        data = csv.reader(open(path, encoding="utf-8"), delimiter="\t", quoting=csv.QUOTE_NONE)
 
         rows = []
 
@@ -143,108 +209,17 @@ class STS(object):
 
         return rows
 
-    @staticmethod
-    def train(vector, score):
-        """
-        Trains an Embeddings model on STS dev + train data.
-
-        Args:
-            vector: word vector model path
-            score: scoring method (bm25, sif, tfidf or None for averaging)
-
-        Returns:
-            trained Embeddings model
-        """
-
-        print("Building model")
-        embeddings = Embeddings({"path": Models.vectorPath(vector),
-                                 "scoring": score,
-                                 "pca": 3})
-
-        rows1 = STS.read(Models.testPath("stsbenchmark", "sts-dev.csv"))
-        rows2 = STS.read(Models.testPath("stsbenchmark", "sts-train.csv"))
-
-        rows = rows1 + rows2
-
-        documents = []
-        for row in rows:
-            tokens = Tokenizer.tokenize(row[2] + " " + row[3])
-
-            if tokens:
-                documents.append((row[0], tokens, None))
-            else:
-                print("Skipping all stop word string: ", row)
-
-        # Build scoring index if scoring method provided
-        if embeddings.config.get("scoring"):
-            embeddings.score(documents)
-
-        # Build embeddings index
-        embeddings.index(documents)
-
-        return embeddings
-
-    @staticmethod
-    def test(args, embeddings):
-        """
-        Tests input Embeddings model against STS benchmark data
-
-        Args:
-            args: command line arguments
-            embeddings: Embeddings model
-        """
-
-        print("Testing model")
-
-        # Test file path
-        path = Models.testPath("stsbenchmark", "sts-%s.csv" % ("dev" if args.method == "dev" else "test"))
-
-        # Read test data
-        rows = STS.read(path)
-
-        # Calculated scores and ground truth labels
-        scores = []
-        labels = []
-
-        for row in rows:
-            tokens1 = Tokenizer.tokenize(row[2])
-            tokens2 = Tokenizer.tokenize(row[3])
-
-            if tokens1 and tokens2:
-                score = embeddings.similarity(tokens1, [tokens2])[0][1]
-                scores.append(score)
-
-                # Ground truth score normalized between 0 - 1
-                labels.append(row[1])
-            else:
-                print("Skipping all stop word string: ", row)
-
-        print("Pearson score =", pearsonr(scores, labels))
-        print("Spearman score =", spearmanr(scores, labels))
-
-    @staticmethod
-    def run(args):
-        """
-        Runs multiple combinations of vector and score combinations.
-
-        Args:
-            args: command line arguments
-        """
-
-        vectors = ["stackexchange-300d.magnitude"]
-        scoring = ["bm25"]
-
-        for vector in vectors:
-            for score in scoring:
-                print("%s - %s" % (vector, score))
-                embeddings = STS.train(vector, score)
-                STS.test(args, embeddings)
-
 if __name__ == "__main__":
     # Command line parser
-    ARGS = Command.parse()
+    parser = argparse.ArgumentParser(description="Evaluate")
+    parser.add_argument("-s", "--source", required=True, help="data source", metavar="SOURCE")
+    parser.add_argument("-m", "--method", help="run method", metavar="METHOD")
 
-    if ARGS.source.lower() == "sts":
-        STS.run(ARGS)
-    else:
-        StackExchange.run(ARGS)
+    # Parse command line arguments
+    args = parser.parse_args()
+
+    # Get eval action
+    action = STS() if args.source.lower() == "sts" else StackExchange()
+
+    # Run eval action
+    action(args)

@@ -1,94 +1,123 @@
 """
-Indexing module
+Index module
 """
 
 import os.path
 import sqlite3
+import sys
 
+from tqdm import tqdm
+from txtai.app import Application
 from txtai.embeddings import Embeddings
 
 from .models import Models
 from .tokenizer import Tokenizer
 
-class Index(object):
+
+class Index:
     """
-    Methods to build a new sentence embeddings index.
+    Builds a new embeddings index.
     """
 
-    @staticmethod
-    def stream(dbfile):
+    def __call__(self, config, dbfile):
         """
-        Streams questions from a questions.db file. This method is a generator and will yield a row at time.
+        Builds and saves an embeddings index.
 
         Args:
+            config: input configuration file
             dbfile: input SQLite file
         """
 
-        # Connection to database file
-        db = sqlite3.connect(dbfile)
-        cur = db.cursor()
+        embeddings = self.build(config, dbfile)
+        embeddings.save(Models.modelPath("stackexchange"))
 
-        cur.execute("SELECT Id, Question, Source, Tags FROM questions")
-
-        count = 0
-        for question in cur:
-            # Tokenize question, source and tags
-            tokens = Tokenizer.tokenize(question[1] + " " + question[2] + " " + question[3])
-
-            document = (question[0], tokens, question[3])
-
-            count += 1
-            if count % 1000 == 0:
-                print("Streamed %d documents" % (count), end="\r")
-
-            # Skip documents with no tokens parsed
-            if tokens:
-                yield document
-
-        print("Iterated over %d total rows" % (count))
-
-        # Free database resources
-        db.close()
-
-    @staticmethod
-    def embeddings(dbfile):
+    def build(self, config, dbfile):
         """
-        Builds a sentence embeddings index.
+        Builds an embeddings index.
 
         Args:
+            config: input configuration file
             dbfile: input SQLite file
 
         Returns:
             embeddings index
         """
 
-        embeddings = Embeddings({"path": Models.vectorPath("stackexchange-300d.magnitude"),
-                                 "storevectors": True,
-                                 "scoring": "bm25",
-                                 "pca": 3,
-                                 "quantize": True})
+        # Configure embeddings index
+        config = Application.read(config)
 
-        # Build scoring index if scoring method provided
-        if embeddings.config.get("scoring"):
-            embeddings.score(Index.stream(dbfile))
+        # Resolve full path to vectors file, if necessary
+        if config.get("scoring"):
+            config["path"] = os.path.join(Models.vectorPath(config["path"]))
+
+        # Create embeddings index
+        embeddings = Embeddings(config)
+
+        # Build scoring index, if scoring method provided
+        if embeddings.scoring:
+            embeddings.score(self.stream(dbfile, embeddings, "Building scoring index"))
 
         # Build embeddings index
-        embeddings.index(Index.stream(dbfile))
+        embeddings.index(self.stream(dbfile, embeddings, "Building embeddings index"))
 
         return embeddings
 
-    @staticmethod
-    def run():
+    def stream(self, dbfile, embeddings, message):
         """
-        Executes an index run.
+        Streams questions from a questions.db file. This method is a generator and will yield a row at time.
+
+        Args:
+            dbfile: input SQLite file
+            embeddings: embeddings instance
+            message: progress bar message
         """
 
-        path = Models.modelPath("stackexchange")
-        dbfile = os.path.join(path, "questions.db")
+        # Connection to database file
+        db = sqlite3.connect(dbfile)
+        db.row_factory = sqlite3.Row
+        cur = db.cursor()
 
-        print("Building new model")
-        embeddings = Index.embeddings(dbfile)
-        embeddings.save(path)
+        # Get total number of questions
+        cur.execute("SELECT count(*) from Questions")
+        total = cur.fetchone()[0]
 
+        # Query for iterating over questions.db rows
+        cur.execute("SELECT Id, Source, SourceId, Date, Tags, Question, QuestionUser, Answer, AnswerUser, Reference FROM Questions")
+
+        for row in tqdm(cur, total=total, desc=message):
+            # Transform all keys to lowercase
+            row = {k.lower():row[k] for k in row.keys()}
+
+            # Store answer as object
+            row["object"] = row.pop("answer")
+
+            # Build text and yield (id, text, tags) tuple
+            row["text"] = row["question"] + " " + row["source"] + " " + row["tags"]
+
+            # Use custom tokenizer for word vector models
+            if embeddings.scoring:
+                row["text"] = Tokenizer.tokenize(row["text"])
+
+            # Yield document
+            yield (row["id"], row, row["tags"])
+
+        # Free database resources
+        db.close()
+
+# pylint: disable=C0103
 if __name__ == "__main__":
-    Index.run()
+    # Path to index configuration file
+    config = sys.argv[1] if len(sys.argv) > 1 else None
+    if not config or not os.path.exists(config):
+        print("Path to index configuration file does not exist, exiting")
+        sys.exit()
+
+    # Path to questions.db file
+    dbfile = sys.argv[2] if len(sys.argv) > 1 else None
+    if not dbfile or not os.path.exists(dbfile):
+        print("Path to questions.db file does not exist, exiting")
+        sys.exit()
+
+    # Build index
+    index = Index()
+    index(config, dbfile)

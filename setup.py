@@ -24,7 +24,7 @@ setup(name="codequestion",
       python_requires=">=3.7",
       entry_points={
           "console_scripts": [
-              "codequestion = codequestion.shell:main",
+              "codequestion = codequestion.console:main",
           ],
       },
       install_requires=[

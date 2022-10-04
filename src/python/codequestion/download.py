@@ -12,13 +12,39 @@ from tqdm import tqdm
 
 from .models import Models
 
-class Download(object):
+
+class Download:
     """
     Downloads a pre-trained model.
     """
 
-    @staticmethod
-    def download(url, dest):
+    def __call__(self, url):
+        """
+        Downloads a pre-trained model from url into the local model cache directory.
+
+        Args:
+            url: url model path
+        """
+
+        # Get base models path
+        path = Models.basePath(True)
+        dest = os.path.join(tempfile.gettempdir(), os.path.basename(url))
+
+        print(f"Downloading model from {url} to {dest}")
+
+        # Download file
+        self.download(url, dest)
+
+        print(f"Decompressing model to {path}")
+
+        # Ensure file was downloaded successfully
+        if os.path.exists(dest):
+            with zipfile.ZipFile(dest, "r") as z:
+                z.extractall(path)
+
+        print("Download complete")
+
+    def download(self, url, dest):
         """
         Downloads a remote file from url and stores at dest.
 
@@ -41,32 +67,6 @@ class Download(object):
                         f.write(chunk)
                         pbar.update(len(chunk))
 
-    @staticmethod
-    def run(url):
-        """
-        Downloads a pre-trained model from url into the local model cache directory.
-
-        Args:
-            url: url model path
-        """
-
-        # Get base models path
-        path = Models.basePath(True)
-        dest = os.path.join(tempfile.gettempdir(), os.path.basename(url))
-
-        print("Downloading model from %s to %s" % (url, dest))
-
-        # Download file
-        Download.download(url, dest)
-
-        print("Decompressing model to %s" % path)
-
-        # Ensure file was downloaded successfully
-        if os.path.exists(dest):
-            with zipfile.ZipFile(dest, "r") as z:
-                z.extractall(path)
-
-        print("Download complete")
-
 if __name__ == "__main__":
-    Download.run("https://github.com/neuml/codequestion/releases/download/v1.1.0/cqmodel.zip")
+    download = Download()
+    download("https://github.com/neuml/codequestion/releases/download/v2.0.0/cqmodel.zip")

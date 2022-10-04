@@ -5,7 +5,8 @@ Models module
 import os
 import os.path
 
-class Models(object):
+
+class Models:
     """
     Common methods for generating data paths.
     """

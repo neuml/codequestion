@@ -8,9 +8,9 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-codequestion is a Python application that allows a user to ask coding questions directly from the terminal. Many developers will have a web browser window open while they develop and run web searches as questions arise. codequestion attempts to make that process faster so you can focus on development.
+codequestion is a Python application that empowers users to ask coding questions directly from the terminal. Developers often have a web browser window open while they work and run web searches as questions arise. With codequestion, this can be done from a local context.
 
-The default model for codequestion is built off the [Stack Exchange Dumps on archive.org](https://archive.org/details/stackexchange). codequestion runs locally against a pre-trained model using data from Stack Exchange. No network connection is required once installed. The model executes similarity queries to find similar questions to the input query. 
+The default model for codequestion is built off the [Stack Exchange Dumps on archive.org](https://archive.org/details/stackexchange). With the default model, codequestion runs locally, no network connection is required. The model executes similarity queries to find similar questions to the input query.
 
 An example of how codequestion works is shown below:
 
@@ -19,43 +19,51 @@ An example of how codequestion works is shown below:
 ## Installation
 The easiest way to install is via pip and PyPI
 
-    pip install codequestion
+```
+pip install codequestion
+```
 
-You can also install codequestion directly from GitHub. Using a Python Virtual Environment is recommended.
+Python 3.7+ is supported. Using a Python [virtual environment](https://docs.python.org/3/library/venv.html) is recommended.
 
-    pip install git+https://github.com/neuml/codequestion
+codequestion can also be installed directly from GitHub to access the latest, unreleased features.
 
-Python 3.6+ is supported
+```
+pip install git+https://github.com/neuml/codequestion
+```
 
-See [this link](https://github.com/neuml/txtai#installation) to help resolve environment-specific install issues.
+See [this link](https://neuml.github.io/txtai/install/#environment-specific-prerequisites) to help resolve environment-specific install issues.
 
 ## Downloading a model
 
 Once codequestion is installed, a model needs to be downloaded.
 
-    python -m codequestion.download
+```
+python -m codequestion.download
+```
 
 The model will be stored in ~/.codequestion/
 
-The model can also be manually installed if the machine doesn't have direct internet access. Pre-trained models are pulled from the [GitHub release page](https://github.com/neuml/codequestion/releases)
+The model can also be manually installed if the machine doesn't have direct internet access. The default model is pulled from the [GitHub release page](https://github.com/neuml/codequestion/releases)
 
-    unzip cqmodel.zip ~/.codequestion
-
-It is possible for codequestion to be customized to run against a custom question-answer repository and more will come on that in the future. At this time, only the Stack Exchange model is supported. 
+```
+unzip cqmodel.zip ~/.codequestion
+```
 
 ## Running queries
 
 The fastest way to run queries is to start a codequestion shell
 
-    codequestion
+```
+codequestion
+```
 
 A prompt will come up. Queries can be typed directly into the console.
 
 ## Tech overview
-The following is an overview of how this project works. 
+The following is an overview covering how this project works.
 
 ### Processing the raw data dumps
-The raw 7z XML dumps from Stack Exchange are processed through a series of steps (see [building a model](#building-a-model)). Only highly scored questions with answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.
+The raw 7z XML dumps from Stack Exchange are processed through a series of steps (see [building a model](#building-a-model)). Only highly scored questions with accepted answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.
 
 *questions.db schema*
 
@@ -71,9 +79,7 @@ The raw 7z XML dumps from Stack Exchange are processed through a series of steps
     Reference TEXT
 
 ### Indexing
-codequestion builds a sentence embeddings index for questions.db. Each question in the questions.db schema is tokenized and resolved to word embeddings. The word embedding model is a custom fastText model built on questions.db. Once each token is converted to word embeddings, a weighted sentence embedding is created. Word embeddings are weighed using a BM25 index over all the tokens in the repository, with one important modification. Tags are used to boost the weights of tag tokens.
-
-Once questions.db is converted to a collection of sentence embeddings, they are normalized and stored in Faiss, which allows for fast similarity searches.
+codequestion builds a sentence embeddings index for questions.db. Each question in the questions.db schema is vectorized with a sentence-transformers model. Once questions.db is converted to a collection of sentence embeddings, the embeddings are normalized and stored in Faiss, which enables fast similarity searches.
 
 ### Querying
 codequestion tokenizes each query using the same method as during indexing. Those tokens are used to build a sentence embedding. That embedding is queried against the Faiss index to find the most similar questions.
@@ -81,7 +87,7 @@ codequestion tokenizes each query using the same method as during indexing. Thos
 ## Building a model
 The following steps show how to build a codequestion model using Stack Exchange archives.
 
-_This is not necessary if using the pre-trained models from the [GitHub release page](https://github.com/neuml/codequestion/releases)_
+_This is not necessary if using the default model from the [GitHub release page](https://github.com/neuml/codequestion/releases)_
 
 1.) Download files from Stack Exchange: https://archive.org/details/stackexchange
 
@@ -113,54 +119,52 @@ _This is not necessary if using the pre-trained models from the [GitHub release 
 
 3.) Run the ETL process
 
-```bash
+```
 python -m codequestion.etl.stackexchange.execute stackexchange
 ```
 
-This will create the file ~/.codequestion/models/stackexchange/questions.db
+This will create the file stackexchange/questions.db
 
-4.) Build word vectors
+4.) __OPTIONAL:__ Build word vectors - only necessary if using a word vectors model
 
-Currently, the model is using BM25 + fastText for indexing.
-
-```bash
-python -m codequestion.vectors
+```
+python -m codequestion.vectors stackexchange/questions.db
 ```
 
 This will create the file ~/.codequestion/vectors/stackexchange-300d.magnitude
 
-5.) Build index
+5.) Build embeddings index
 
-```bash
-python -m codequestion.index
 ```
+python -m codequestion.index index.yml stackexchange/questions.db
+```
+
+The [default index.yml](https://raw.githubusercontent.com/neuml/codequestion/master/config/index.yml) file is found on GitHub. Settings can be changed to customize how the index is built.
 
 After this step, the index is created and all necessary files are ready to query.
 
 ## Model accuracy
-The following sections show test results for various word vector/scoring combinations. SE 300d word vectors with BM25 scoring does the best against this dataset. Even with the reduced vocabulary of < 1M Stack Exchange questions, SE 300d - BM25 does reasonably well against the STS Benchmark.
+The following sections show test results for codequestion v2 and codequestion v1 using the latest Stack Exchange dumps. Version 2 uses a sentence-transformers model. Version 1 uses a word vectors model with BM25 weighting. BM25 and TF-IDF are shown to establish a baseline score.
 
 **StackExchange Query**
 
-Models scored using Mean Reciprocal Rank (MRR)
+Models are scored using [Mean Reciprocal Rank (MRR)](https://en.wikipedia.org/wiki/Mean_reciprocal_rank).
 
-| Model           | MRR   | 
-| --------------- | :---: |
-| SE 300d - BM25  | 76.3  |
-| ParaNMT - BM25  | 67.4  |
-| FastText - BM25 | 66.1  |
-| BM25            | 49.5  |
-| TF-IDF          | 45.9  |
+| Model               | MRR   |
+| ------------------- | :---: |
+| all-MiniLM-L6-v2    | 85.0  |
+| SE 300d - BM25      | 77.1  |
+| BM25                | 67.7  |
+| TF-IDF              | 61.7  |
 
 **STS Benchmark**
 
-Models scored using Pearson Correlation
+Models are scored using [Pearson Correlation](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient). Note that the word vectors model is only trained on Stack Exchange data, so it isn't expected to generalize as well against the STS dataset.
 
-| Model           | Supervision   | Dev   | Test  |
-| --------------- | :-----------: | :---: | :---: |
-| ParaNMT - BM25  | Train         | 82.6  | 78.1  |
-| FastText - BM25 | Train         | 79.8  | 72.7  |
-| SE 300d - BM25  | Train         | 77.0  | 69.1  |
+| Model            | Supervision   | Dev   | Test  |
+| ---------------- | :-----------: | :---: | :---: |
+| all-MiniLM-L6-v2 | Train         | 87.0  | 82.7  |
+| SE 300d - BM25   | Train         | 74.0  | 67.4  |
 
 ## Testing
 To reproduce the tests above, you need to download the test data into ~/.codequestion/test
