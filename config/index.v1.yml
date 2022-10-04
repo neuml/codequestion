@@ -1,0 +1,9 @@
+path: stackexchange-300d.magnitude
+content: True
+objects: True
+quantize: True
+storevectors: True
+scoring:
+  method: bm25
+  k1: 0.1
+pca: 3

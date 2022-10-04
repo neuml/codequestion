@@ -1,0 +1,18 @@
+path: sentence-transformers/all-MiniLM-L6-v2
+content: True
+objects: True
+quantize: True
+functions:
+  - name: graph
+    function: graph.attribute
+expressions:
+  - name: topic
+    expression: graph(indexid, 'topic')
+  - name: topicrank
+    expression: graph(indexid, 'topicrank')
+graph:
+  limit: 100
+  minscore: 0.2
+  topics:
+    stopwords: 
+      - stackoverflow
