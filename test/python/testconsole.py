@@ -74,8 +74,8 @@ class TestConsole(unittest.TestCase):
         Test .topics command
         """
 
-        self.assertIn("ai", self.command(".topics"))
-        self.assertIn("ai", self.command(".topics ai"))
+        self.assertNotIn("ERROR", self.command(".topics"))
+        self.assertNotIn("ERROR", self.command(".topics ai"))
 
     def command(self, command):
         """
