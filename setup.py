@@ -20,7 +20,7 @@ setup(
     download_url="https://pypi.org/project/codequestion/",
     license="Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0",
     packages=["codequestion"],
-    package_dir={"": "src/python/"},
+    package_dir={"": "src/python"},
     keywords="python search embedding machine-learning",
     python_requires=">=3.7",
     entry_points={
