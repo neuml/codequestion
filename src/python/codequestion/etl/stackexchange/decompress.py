@@ -20,11 +20,11 @@ class Decompress:
             path: input directory path with 7z files
         """
 
-        # Resolve full path to 7za or 7z
-        binary = shutil.which("7za")
-        binary = binary if binary else shutil.which("7z")
+        # Check for 7za, default to 7z
+        binary = "7za" if shutil.which("7za") else "7z"
 
         # Build command
+        path = path.replace("\\", "/")
         command = f"{binary} e {path}/*.7z Posts.xml -y -o{path}"
         print(command)
 
