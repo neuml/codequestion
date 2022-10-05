@@ -7,7 +7,7 @@ import io
 import unittest
 
 from codequestion.console import Console
-from codequestion.execute import Execute
+from codequestion.etl.stackexchange import Execute
 from codequestion.index import Index
 
 # pylint: disable=C0411
