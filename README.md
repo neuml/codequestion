@@ -80,6 +80,27 @@ codequestion
 
 A prompt will come up. Queries can be typed directly into the console.
 
+## Run as API service
+
+codequestion builds a standard txtai embeddings index. As such, it supports hosting the index via a [txtai API service](https://neuml.github.io/txtai/api).
+
+_app.yml_
+```yaml
+path: /home/user/.codequestion/models/stackexchange/
+embeddings:
+```
+
+```
+# Install API extra
+pip install codequestion[api]
+
+# Start API
+CONFIG=app.yml uvicorn "txtai.api:app"
+
+# Test API
+curl "http://127.0.0.1:8000/search?query=python+regex"
+```
+
 ## Tech overview
 The following is an overview covering how this project works.
 

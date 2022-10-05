@@ -34,6 +34,7 @@ setup(
         "tqdm>=4.48.0",
         "txtai[graph,similarity]>=5.0.0",
     ],
+    extra_requires={"api": ["txtai[api]>=5.0.0"]},
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
