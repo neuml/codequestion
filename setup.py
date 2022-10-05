@@ -33,7 +33,7 @@ setup(
         "rich>=12.0.1",
         "scipy>=1.4.1",
         "tqdm>=4.48.0",
-        "txtai[similarity]>=5.0.0",
+        "txtai[graph,similarity]>=5.0.0",
     ],
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
