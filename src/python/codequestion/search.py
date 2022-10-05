@@ -48,11 +48,14 @@ class Search:
             query = f"{prefix} id = '{uid}'"
         elif self.embeddings.scoring:
             # Use custom tokenizer for word vector models
-            result = self.embeddings.search(Tokenizer.tokenize(query), 1)[0]
+            query = Tokenizer.tokenize(query)
+
+            # Run search and build id query
+            result = self.embeddings.search(query, 1)[0] if query else {}
             query = f"""
-                select id, {result['score']} score, questionuser, question, tags, date, answeruser, object answer, reference
+                select id, {result.get('score')} score, questionuser, question, tags, date, answeruser, object answer, reference
                 from txtai
-                where id = {result['id']}
+                where id = '{result.get('id')}'
             """
         else:
             # Default similar clause query
