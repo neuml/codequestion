@@ -72,7 +72,7 @@ class TestConsole(unittest.TestCase):
         """
 
         self.assertIn("ai", self.command(".topics"))
-        self.assertIn("ai", self.command(".topics nlp"))
+        self.assertIn("ai", self.command(".topics ai"))
 
     def command(self, command):
         """
