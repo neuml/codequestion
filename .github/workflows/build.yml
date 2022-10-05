@@ -10,14 +10,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
+    timeout-minutes: 60
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Install Python - Linux
         uses: actions/setup-python@v4
         with:
           python-version: 3.7
         if: matrix.os == 'ubuntu-latest'
+
       - name: Install Python - Windows/macOS
         uses: actions/setup-python@v4
         with:
@@ -35,6 +38,9 @@ jobs:
           pip install .
           python --version
           make data coverage
+
+      - uses: pre-commit/action@v3.0.0
+        if: matrix.os == 'ubuntu-latest'
 
       - name: Test Coverage
         run: coveralls --service=github
