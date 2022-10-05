@@ -1,5 +1,5 @@
 # pylint: disable = C0111
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as f:
     DESCRIPTION = f.read()
@@ -17,11 +17,10 @@ setup(
         "Issue Tracker": "https://github.com/neuml/codequestion/issues",
         "Source Code": "https://github.com/neuml/codequestion",
     },
-    download_url="https://pypi.org/project/codequestion/",
     license="Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0",
-    packages=["codequestion"],
+    packages=find_packages(where="src/python"),
     package_dir={"": "src/python"},
-    keywords="python search embedding machine-learning",
+    keywords="search embedding machine-learning nlp",
     python_requires=">=3.7",
     entry_points={
         "console_scripts": [
@@ -39,6 +38,7 @@ setup(
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3",
+        "Topic :: Scientific/Engineering :: Artificial Intelligence",
         "Topic :: Software Development",
         "Topic :: Text Processing :: Indexing",
         "Topic :: Utilities",
