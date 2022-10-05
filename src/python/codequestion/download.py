@@ -18,7 +18,7 @@ class Download:
     Downloads a pre-trained model.
     """
 
-    def __call__(self, url):
+    def __call__(self, url, path=None):
         """
         Downloads a pre-trained model from url into the local model cache directory.
 
@@ -27,7 +27,7 @@ class Download:
         """
 
         # Get base models path
-        path = Models.basePath(True)
+        path = path if path else Models.basePath(True)
         dest = os.path.join(tempfile.gettempdir(), os.path.basename(url))
 
         print(f"Downloading model from {url} to {dest}")
@@ -55,7 +55,8 @@ class Download:
 
         with urlopen(url) as response:
             buffer = 16 * 1024
-            size = int(response.info()["Content-Length"])
+            headers = response.info()
+            size = int(headers["Content-Length"]) if "Content-Length" in headers else -1
 
             with tqdm(total=size, unit="B", unit_scale=True, unit_divisor=1024) as pbar:
                 with open(dest, "wb") as f:
@@ -67,6 +68,9 @@ class Download:
                         f.write(chunk)
                         pbar.update(len(chunk))
 
+
 if __name__ == "__main__":
     download = Download()
-    download("https://github.com/neuml/codequestion/releases/download/v2.0.0/cqmodel.zip")
+    download(
+        "https://github.com/neuml/codequestion/releases/download/v2.0.0/cqmodel.zip"
+    )

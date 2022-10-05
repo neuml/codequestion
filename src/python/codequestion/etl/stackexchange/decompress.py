@@ -24,13 +24,15 @@ class Decompress:
         print(command)
 
         # Start command
-        process = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, universal_newlines=True)
-        while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                print(output.strip())
+        with subprocess.Popen(
+            shlex.split(command), stdout=subprocess.PIPE, universal_newlines=True
+        ) as process:
+            while True:
+                output = process.stdout.readline()
+                if output == "" and process.poll() is not None:
+                    break
+                if output:
+                    print(output.strip())
 
-        # Call final poll on completion
-        process.poll()
+            # Call final poll on completion
+            process.poll()

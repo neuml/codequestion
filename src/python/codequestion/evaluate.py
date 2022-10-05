@@ -19,7 +19,7 @@ class StackExchange:
     Stack Exchange query-answer dataset.
     """
 
-    def __call__(self, args):
+    def __call__(self, method):
         """
         Evaluates a pre-trained model against the Stack Exchange query-answer dataset.
 
@@ -34,12 +34,16 @@ class StackExchange:
         mrr = []
 
         # Build scoring index
-        if args.method in ("bm25", "tfidf", "sif"):
-            scoring = ScoringFactory.create({"method": args.method, "content": True, "terms": True, "k1": 0.1})
+        if method in ("bm25", "tfidf", "sif"):
+            scoring = ScoringFactory.create(
+                {"method": method, "content": True, "terms": True, "k1": 0.1}
+            )
             scoring.index(self.stream(embeddings, "Building scoring index"))
 
         # Run test data
-        with open(Models.testPath("stackexchange", "query.txt"), encoding="utf-8") as rows:
+        with open(
+            Models.testPath("stackexchange", "query.txt"), encoding="utf-8"
+        ) as rows:
             for row in rows:
                 query, sourceid, source, _ = row.split("|", 3)
                 print(query, sourceid, source)
@@ -50,7 +54,10 @@ class StackExchange:
                 # Get row index within results
                 index = -1
                 for x, result in enumerate(results):
-                    if int(sourceid) == result["sourceid"] and source == result["source"]:
+                    if (
+                        int(sourceid) == result["sourceid"]
+                        and source == result["source"]
+                    ):
                         index = x
 
                 # Calculate stats
@@ -87,7 +94,9 @@ class StackExchange:
         offset, batch = 0, 1000
         with tqdm(total=embeddings.count(), desc=message) as progress:
             for offset in range(0, embeddings.count(), batch):
-                for result in embeddings.search(f"select id, text, tags, source, sourceid from txtai limit {batch} offset {offset}"):
+                for result in embeddings.search(
+                    f"select id, text, tags, source, sourceid from txtai limit {batch} offset {offset}"
+                ):
                     yield (result["id"], result, None)
 
                 progress.update(batch)
@@ -111,15 +120,23 @@ class StackExchange:
             results = [result["data"] for result in scoring.search(query, 10)]
         elif embeddings.scoring:
             # Use custom tokenizer for word vector models
-            uids = [row["id"] for row in embeddings.search(Tokenizer.tokenize(query), 10)]
+            uids = [
+                row["id"] for row in embeddings.search(Tokenizer.tokenize(query), 10)
+            ]
 
             # Get source id + source for each result
             results = []
             for uid in uids:
-                results.append(embeddings.search(f"select sourceid, source from txtai where id = {uid}")[0])
+                results.append(
+                    embeddings.search(
+                        f"select sourceid, source from txtai where id = {uid}"
+                    )[0]
+                )
         else:
             # Select source id + source with standard similar clause
-            results = embeddings.search(f"select sourceid, source from txtai where similar('{query}') limit 10")
+            results = embeddings.search(
+                f"select sourceid, source from txtai where similar('{query}') limit 10"
+            )
 
         return results
 
@@ -132,7 +149,7 @@ class STS:
     http://ixa2.si.ehu.es/stswiki/index.php/STSbenchmark
     """
 
-    def __call__(self, args):
+    def __call__(self, method):
         """
         Test a list of vector models.
 
@@ -145,9 +162,9 @@ class STS:
         embeddings.load(Models.modelPath("stackexchange"))
 
         # Test model against sts dataset
-        self.test(args, embeddings)
+        self.test(method, embeddings)
 
-    def test(self, args, embeddings):
+    def test(self, method, embeddings):
         """
         Tests input Embeddings model against STS benchmark data.
 
@@ -157,7 +174,9 @@ class STS:
         """
 
         # Test file path
-        path = Models.testPath("stsbenchmark", f"sts-{'dev' if args.method == 'dev' else 'test'}.csv")
+        path = Models.testPath(
+            "stsbenchmark", f"sts-{'dev' if method == 'dev' else 'test'}.csv"
+        )
 
         # Read test data
         rows = self.read(path)
@@ -195,24 +214,28 @@ class STS:
             rows
         """
 
-        data = csv.reader(open(path, encoding="utf-8"), delimiter="\t", quoting=csv.QUOTE_NONE)
+        with open(path, encoding="utf-8") as f:
+            data = csv.reader(f, delimiter="\t", quoting=csv.QUOTE_NONE)
 
-        rows = []
+            rows = []
 
-        # Column Index-Name: 4-score, 5-string 1, 6-string 2
-        for x, row in enumerate(data):
-            # Normalize score from 0-5 to 0-1. 1 being most similar.
-            score = float(row[4]) / 5.0
+            # Column Index-Name: 4-score, 5-string 1, 6-string 2
+            for x, row in enumerate(data):
+                # Normalize score from 0-5 to 0-1. 1 being most similar.
+                score = float(row[4]) / 5.0
 
-            # Store row as id (1 indexed), normalized score, string 1, string 2
-            rows.append((x + 1, score, row[5], row[6]))
+                # Store row as id (1 indexed), normalized score, string 1, string 2
+                rows.append((x + 1, score, row[5], row[6]))
 
-        return rows
+            return rows
+
 
 if __name__ == "__main__":
     # Command line parser
     parser = argparse.ArgumentParser(description="Evaluate")
-    parser.add_argument("-s", "--source", required=True, help="data source", metavar="SOURCE")
+    parser.add_argument(
+        "-s", "--source", required=True, help="data source", metavar="SOURCE"
+    )
     parser.add_argument("-m", "--method", help="run method", metavar="METHOD")
 
     # Parse command line arguments
@@ -222,4 +245,4 @@ if __name__ == "__main__":
     action = STS() if args.source.lower() == "sts" else StackExchange()
 
     # Run eval action
-    action(args)
+    action(args.method)

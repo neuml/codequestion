@@ -15,16 +15,16 @@ class DB2QA:
 
     # Questions schema
     QUESTIONS = {
-        'Id': 'INTEGER PRIMARY KEY',
-        'Source': 'TEXT',
-        'SourceId': 'INTEGER',
-        'Date': 'DATETIME',
-        'Tags': 'TEXT',
-        'Question': 'TEXT',
-        'QuestionUser': 'TEXT',
-        'Answer': 'TEXT',
-        'AnswerUser': 'TEXT',
-        'Reference': 'TEXT'
+        "Id": "INTEGER PRIMARY KEY",
+        "Source": "TEXT",
+        "SourceId": "INTEGER",
+        "Date": "DATETIME",
+        "Tags": "TEXT",
+        "Question": "TEXT",
+        "QuestionUser": "TEXT",
+        "Answer": "TEXT",
+        "AnswerUser": "TEXT",
+        "Reference": "TEXT",
     }
 
     # List of sources
@@ -51,7 +51,7 @@ class DB2QA:
         "superuser": "https://superuser.com",
         "unix": "https://unix.stackexchange.com",
         "vi": "https://vi.stackexchange.com",
-        "wordpress": "https://wordpress.stackexchange.com"
+        "wordpress": "https://wordpress.stackexchange.com",
     }
 
     # SQL statements
@@ -95,7 +95,9 @@ class DB2QA:
             db = sqlite3.connect(dbfile)
             cur = db.cursor()
 
-            cur.execute("SELECT Id, AcceptedAnswerId, OwnerUserId, OwnerDisplayName, LastActivityDate, Title, Tags FROM questions")
+            cur.execute(
+                "SELECT Id, AcceptedAnswerId, OwnerUserId, OwnerDisplayName, LastActivityDate, Title, Tags FROM questions"
+            )
 
             # Need to select all rows to allow execution of insert statements
             for question in cur.fetchall():
@@ -114,7 +116,11 @@ class DB2QA:
         print(f"Total rows inserted: {index}")
 
         # Create indices
-        for statement in [DB2QA.CREATE_SOURCE_INDEX, DB2QA.CREATE_TEXT_INDEX, DB2QA.INSERT_TEXT_ROWS]:
+        for statement in [
+            DB2QA.CREATE_SOURCE_INDEX,
+            DB2QA.CREATE_TEXT_INDEX,
+            DB2QA.INSERT_TEXT_ROWS,
+        ]:
             qa.execute(statement)
 
         # Commit changes and close
@@ -154,7 +160,10 @@ class DB2QA:
         """
 
         # Query for accepted answer
-        cur.execute("SELECT Body, OwnerUserId, OwnerDisplayName from answers where Id = ?", [question[1]])
+        cur.execute(
+            "SELECT Body, OwnerUserId, OwnerDisplayName from answers where Id = ?",
+            [question[1]],
+        )
         answer = cur.fetchone()
 
         if answer and answer[0]:
@@ -179,9 +188,11 @@ class DB2QA:
 
         # Build insert prepared statement
         columns = [name for name, _ in table.items()]
-        insert = DB2QA.INSERT_ROW.format(table="questions",
-                                         columns=", ".join(columns),
-                                         values=("?, " * len(columns))[:-2])
+        insert = DB2QA.INSERT_ROW.format(
+            table="questions",
+            columns=", ".join(columns),
+            values=("?, " * len(columns))[:-2],
+        )
 
         # Build row of insert values
         row = self.build(index, source, question, answer)
@@ -214,7 +225,18 @@ class DB2QA:
         reference = f"{DB2QA.SOURCES[source]}/questions/{question[0]}"
 
         # Id, Source, SourceId, Date, Tags, Question, QuestionUser, Answer, AnswerUser, Reference
-        return (index, source, question[0], question[4], " ".join(tags), question[5], quser, answer[0], auser, reference)
+        return (
+            index,
+            source,
+            question[0],
+            question[4],
+            " ".join(tags),
+            question[5],
+            quser,
+            answer[0],
+            auser,
+            reference,
+        )
 
     def values(self, table, row, columns):
         """
@@ -234,9 +256,9 @@ class DB2QA:
             # Get value
             value = row[x]
 
-            if table[column].startswith('INTEGER'):
+            if table[column].startswith("INTEGER"):
                 values.append(int(value) if value else 0)
-            elif table[column] == 'BOOLEAN':
+            elif table[column] == "BOOLEAN":
                 values.append(1 if value == "TRUE" else 0)
             else:
                 values.append(value)

@@ -45,7 +45,7 @@ class Sift:
                             output.write(line)
 
                     # PostTypeId = 2 (Answer)
-                    elif "PostTypeId=\"2\"" in line:
+                    elif 'PostTypeId="2"' in line:
                         # Parse post id
                         pid = self.parse(r"Id=\"([0-9]+)\"", line)
 

@@ -6,6 +6,27 @@
     <p>Ask coding questions directly from the terminal</p>
 </h3>
 
+<p align="center">
+    <a href="https://github.com/neuml/codequestion/releases">
+        <img src="https://img.shields.io/github/release/neuml/codequestion.svg?style=flat&color=success" alt="Version"/>
+    </a>
+    <a href="https://github.com/neuml/codequestion/releases">
+        <img src="https://img.shields.io/github/release-date/neuml/codequestion.svg?style=flat&color=blue" alt="GitHub Release Date"/>
+    </a>
+    <a href="https://github.com/neuml/codequestion/issues">
+        <img src="https://img.shields.io/github/issues/neuml/codequestion.svg?style=flat&color=success" alt="GitHub issues"/>
+    </a>
+    <a href="https://github.com/neuml/codequestion">
+        <img src="https://img.shields.io/github/last-commit/neuml/codequestion.svg?style=flat&color=blue" alt="GitHub last commit"/>
+    </a>
+    <a href="https://github.com/neuml/codequestion/actions?query=workflow%3Abuild">
+        <img src="https://github.com/neuml/codequestion/workflows/build/badge.svg" alt="Build Status"/>
+    </a>
+    <a href="https://coveralls.io/github/neuml/codequestion?branch=master">
+        <img src="https://img.shields.io/coveralls/github/neuml/codequestion" alt="Coverage Status">
+    </a>
+</p>
+
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 codequestion is a Python application that empowers users to ask coding questions directly from the terminal. Developers often have a web browser window open while they work and run web searches as questions arise. With codequestion, this can be done from a local context.

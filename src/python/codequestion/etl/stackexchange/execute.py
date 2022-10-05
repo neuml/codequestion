@@ -18,9 +18,31 @@ class Execute:
     """
 
     # List of sources
-    SOURCES = ["ai", "android", "apple", "arduino", "askubuntu", "avp", "codereview", "cs", "datascience", "dba", "devops",
-               "dsp", "raspberrypi", "reverseengineering", "scicomp", "serverfault", "security", "stackoverflow", "stats",
-               "superuser", "unix", "vi", "wordpress"]
+    SOURCES = [
+        "ai",
+        "android",
+        "apple",
+        "arduino",
+        "askubuntu",
+        "avp",
+        "codereview",
+        "cs",
+        "datascience",
+        "dba",
+        "devops",
+        "dsp",
+        "raspberrypi",
+        "reverseengineering",
+        "scicomp",
+        "serverfault",
+        "security",
+        "stackoverflow",
+        "stats",
+        "superuser",
+        "unix",
+        "vi",
+        "wordpress",
+    ]
 
     def __call__(self, path):
         """
@@ -74,7 +96,10 @@ class Execute:
             xml2db(filtered, dbfile)
 
         # Get list of all databases to consolidate
-        return [os.path.join(path, source, f"{source}.db") for source in Execute.SOURCES]
+        return [
+            os.path.join(path, source, f"{source}.db") for source in Execute.SOURCES
+        ]
+
 
 if __name__ == "__main__":
     # Input data directory

@@ -14,31 +14,31 @@ class XML2DB:
 
     # Questions schema
     QUESTIONS = {
-        'Id': 'INTEGER PRIMARY KEY',
-        'AcceptedAnswerId': 'INTEGER',
-        'CreationDate': 'DATETIME',
-        'LastActivityDate': 'DATETIME',
-        'Score': 'INTEGER',
-        'ViewCount': 'INTEGER',
-        'OwnerUserId': 'INTEGER',
-        'OwnerDisplayName': 'TEXT',
-        'Title': 'TEXT',
-        'Tags': 'TEXT',
-        'AnswerCount': 'INTEGER',
-        'CommentCount': 'INTEGER',
-        'FavoriteCount': 'INTEGER',
-        'ClosedDate': 'DATETIME'
+        "Id": "INTEGER PRIMARY KEY",
+        "AcceptedAnswerId": "INTEGER",
+        "CreationDate": "DATETIME",
+        "LastActivityDate": "DATETIME",
+        "Score": "INTEGER",
+        "ViewCount": "INTEGER",
+        "OwnerUserId": "INTEGER",
+        "OwnerDisplayName": "TEXT",
+        "Title": "TEXT",
+        "Tags": "TEXT",
+        "AnswerCount": "INTEGER",
+        "CommentCount": "INTEGER",
+        "FavoriteCount": "INTEGER",
+        "ClosedDate": "DATETIME",
     }
 
     # Answers schema
     ANSWERS = {
-        'Id': 'INTEGER PRIMARY KEY',
-        'ParentId': 'INTEGER',
-        'CreationDate': 'DATETIME',
-        'Score': 'INTEGER',
-        'Body': 'TEXT',
-        'OwnerUserId': 'INTEGER',
-        'OwnerDisplayName': 'TEXT'
+        "Id": "INTEGER PRIMARY KEY",
+        "ParentId": "INTEGER",
+        "CreationDate": "DATETIME",
+        "Score": "INTEGER",
+        "Body": "TEXT",
+        "OwnerUserId": "INTEGER",
+        "OwnerDisplayName": "TEXT",
     }
 
     # SQL statements
@@ -141,14 +141,18 @@ class XML2DB:
 
         if "PostTypeId" in row.attrib:
             # PostType="1" - Question, PostType="2" - Answer
-            table = XML2DB.QUESTIONS if row.attrib["PostTypeId"] == "1" else XML2DB.ANSWERS
+            table = (
+                XML2DB.QUESTIONS if row.attrib["PostTypeId"] == "1" else XML2DB.ANSWERS
+            )
             name = "questions" if row.attrib["PostTypeId"] == "1" else "answers"
 
             # Build insert prepared statement
             columns = [name for name, _ in table.items()]
-            insert = XML2DB.INSERT_ROW.format(table=name,
-                                              columns=", ".join(columns),
-                                              values=("?, " * len(columns))[:-2])
+            insert = XML2DB.INSERT_ROW.format(
+                table=name,
+                columns=", ".join(columns),
+                values=("?, " * len(columns))[:-2],
+            )
 
             # Execute insert statement
             db.execute(insert, self.values(table, row, columns))
@@ -171,9 +175,9 @@ class XML2DB:
             # Get column value
             value = row.attrib[column] if column in row.attrib else None
 
-            if table[column].startswith('INTEGER'):
+            if table[column].startswith("INTEGER"):
                 values.append(int(value) if value else 0)
-            elif table[column] == 'BOOLEAN':
+            elif table[column] == "BOOLEAN":
                 values.append(1 if value == "TRUE" else 0)
             else:
                 values.append(value)

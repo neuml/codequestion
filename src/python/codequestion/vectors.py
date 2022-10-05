@@ -80,7 +80,9 @@ class RowIterator:
 
         for question in tqdm(cur, total=total, desc="Tokenizing input"):
             # Tokenize question, source and tags
-            tokens = Tokenizer.tokenize(question[0] + " " + question[1] + " " + question[2])
+            tokens = Tokenizer.tokenize(
+                question[0] + " " + question[1] + " " + question[2]
+            )
 
             # Skip documents with no tokens parsed
             if tokens:
@@ -131,7 +133,9 @@ class Vectors:
         tokens = None
 
         # Stream tokens to temp working file
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as output:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".txt", delete=False
+        ) as output:
             # Save file path
             tokens = output.name
 
@@ -139,6 +143,7 @@ class Vectors:
                 output.write(" ".join(row) + "\n")
 
         return tokens
+
 
 # pylint: disable=C0103
 if __name__ == "__main__":

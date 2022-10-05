@@ -82,11 +82,13 @@ class Index:
         total = cur.fetchone()[0]
 
         # Query for iterating over questions.db rows
-        cur.execute("SELECT Id, Source, SourceId, Date, Tags, Question, QuestionUser, Answer, AnswerUser, Reference FROM Questions")
+        cur.execute(
+            "SELECT Id, Source, SourceId, Date, Tags, Question, QuestionUser, Answer, AnswerUser, Reference FROM Questions"
+        )
 
         for row in tqdm(cur, total=total, desc=message):
             # Transform all keys to lowercase
-            row = {k.lower():row[k] for k in row.keys()}
+            row = {k.lower(): row[k] for k in row.keys()}
 
             # Store answer as object
             row["object"] = row.pop("answer")
@@ -103,6 +105,7 @@ class Index:
 
         # Free database resources
         db.close()
+
 
 # pylint: disable=C0103
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ from .tokenizer import Tokenizer
 
 class Search:
     """
-    Searchan embeddings index.
+    Search an embeddings index.
     """
 
     def __init__(self):
@@ -50,7 +50,7 @@ class Search:
             # Use custom tokenizer for word vector models
             result = self.embeddings.search(Tokenizer.tokenize(query), 1)[0]
             query = f"""
-                select id, {result['score']} score, questionuser, question, tags, answeruser, object answer, reference
+                select id, {result['score']} score, questionuser, question, tags, date, answeruser, object answer, reference
                 from txtai
                 where id = {result['id']}
             """
@@ -81,7 +81,9 @@ class Search:
             embeddings.load(path)
         else:
             print("ERROR: loading model: ensure model is installed")
-            print("ERROR: Pre-trained model can be installed by running python -m codequestion.download")
+            print(
+                "ERROR: Pre-trained model can be installed by running python -m codequestion.download"
+            )
             raise FileNotFoundError(f"Unable to load codequestion model from {path}")
 
         return embeddings
@@ -99,13 +101,15 @@ class Search:
         score = result["score"]
         score = score if score is not None else 1.0
 
-        self.console.print(f"[bright_green]Question (by {result['questionuser']}): {result['question']} [{score:4f}][/bright_green]",
-                            highlight=False)
+        self.console.print(
+            f"[bright_green]Question (by {result['questionuser']}): {result['question']} [{score:4f}][/bright_green]",
+            highlight=False,
+        )
         self.console.print(f"Id: {result['id']}", highlight=False)
         self.console.print(f"Last Activity: {result['date']}", highlight=False)
         self.console.print(f"Tags: {result['tags']}")
         self.console.print(f"Answer (by {result['answeruser']}):\n", highlight=False)
-        self.console.print(self.markdown(result['answer']))
+        self.console.print(self.markdown(result["answer"]))
         self.console.print(f"\nReference: {result['reference']}")
 
         # Print results divider
