@@ -7,6 +7,7 @@ import io
 import unittest
 
 from codequestion.console import Console
+from codequestion.execute import Execute
 from codequestion.index import Index
 
 # pylint: disable=C0411
@@ -23,6 +24,12 @@ class TestConsole(unittest.TestCase):
         """
         Initialize test data.
         """
+
+        # Run etl process
+        Execute.SOURCES = ["ai"]
+
+        execute = Execute()
+        execute(Utils.STACKEXCHANGE)
 
         # Create embeddings index
         index = Index()
