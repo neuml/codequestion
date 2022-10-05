@@ -20,12 +20,12 @@ class Decompress:
             path: input directory path with 7z files
         """
 
-        print(shutil.which("7za"))
-        print(shutil.which("7z"))
-        print(shutil.which("7zip"))
+        # Check for either 7za or 7z executable
+        binary = shutil.which("7za")
+        binary = binary if binary else "7z"
 
-        # Build the 7za command
-        command = f"7za e {path}/*.7z Posts.xml -y -o{path}"
+        # Build command
+        command = f"{binary} e {path}/*.7z Posts.xml -y -o{path}"
         print(command)
 
         # Start command
