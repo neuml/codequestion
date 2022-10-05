@@ -4,6 +4,7 @@ Index module tests
 
 import contextlib
 import io
+import os
 import unittest
 
 from codequestion.evaluate import StackExchange, STS
@@ -25,6 +26,8 @@ class TestIndex(unittest.TestCase):
         Test transformers-backed index
         """
 
+        os.environ["CODEQUESTION_HOME"] = Utils.STACKEXCHANGE + ".transformers"
+
         # Create embeddings index
         index = Index()
         index(Utils.PATH + "/index.yml", Utils.QUESTIONS)
@@ -36,6 +39,8 @@ class TestIndex(unittest.TestCase):
         """
         Test word vector-backed index
         """
+
+        os.environ["CODEQUESTION_HOME"] = Utils.STACKEXCHANGE + ".wv"
 
         # Build word vectors
         vectors = Vectors()
@@ -72,8 +77,8 @@ class TestIndex(unittest.TestCase):
         """
 
         action = StackExchange()
-        self.assertIn("Mean Reciprocal Rank", self.command(lambda: action(None)))
-        self.assertIn("Mean Reciprocal Rank", self.command(lambda: action("bm25")))
+        self.assertIn("Mean Reciprocal Rank", self.command(lambda: action(Utils.TESTS, None)))
+        self.assertIn("Mean Reciprocal Rank", self.command(lambda: action(Utils.TESTS, "bm25")))
 
     def sts(self):
         """
@@ -81,7 +86,7 @@ class TestIndex(unittest.TestCase):
         """
 
         action = STS()
-        self.assertIn("Pearson", self.command(lambda: action(None)))
+        self.assertIn("Pearson", self.command(lambda: action(Utils.TESTS, None)))
 
     def command(self, command):
         """

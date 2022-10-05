@@ -188,10 +188,10 @@ Models are scored using [Pearson Correlation](https://en.wikipedia.org/wiki/Pear
 | SE 300d - BM25   | Train         | 74.0  | 67.4  |
 
 ## Testing
-To reproduce the tests above, you need to download the test data into ~/.codequestion/test
+To reproduce the tests above, run the following. Substitute $TEST_PATH with any local path.
 
-    mkdir -p ~/.codequestion/test/stackexchange
-    wget https://raw.githubusercontent.com/neuml/codequestion/master/test/stackexchange/query.txt -P ~/.codequestion/test/stackexchange
+    mkdir -p $TEST_PATH
+    wget https://raw.githubusercontent.com/neuml/codequestion/master/test/stackexchange/query.txt -P $TEST_PATH/stackexchange
     wget http://ixa2.si.ehu.es/stswiki/images/4/48/Stsbenchmark.tar.gz
-    tar -C ~/.codequestion/test -xvzf Stsbenchmark.tar.gz
-    python -m codequestion.evaluate -s test
+    tar -C $TEST_PATH -xvzf Stsbenchmark.tar.gz
+    python -m codequestion.evaluate -s test -p $TEST_PATH

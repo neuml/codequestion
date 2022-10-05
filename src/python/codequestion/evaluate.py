@@ -4,6 +4,7 @@ Evaluate module
 
 import argparse
 import csv
+import os
 
 from scipy.stats import pearsonr, spearmanr
 from tqdm import tqdm
@@ -19,12 +20,13 @@ class StackExchange:
     Stack Exchange query-answer dataset.
     """
 
-    def __call__(self, method):
+    def __call__(self, path, method):
         """
         Evaluates a pre-trained model against the Stack Exchange query-answer dataset.
 
         Args:
-            args: command line arguments
+            path: path to tests
+            method: run method
         """
 
         # Load model
@@ -42,7 +44,7 @@ class StackExchange:
 
         # Run test data
         with open(
-            Models.testPath("stackexchange", "query.txt"), encoding="utf-8"
+            os.path.join(path, "stackexchange", "query.txt"), encoding="utf-8"
         ) as rows:
             for row in rows:
                 query, sourceid, source, _ = row.split("|", 3)
@@ -149,12 +151,13 @@ class STS:
     http://ixa2.si.ehu.es/stswiki/index.php/STSbenchmark
     """
 
-    def __call__(self, method):
+    def __call__(self, path, method):
         """
         Test a list of vector models.
 
         Args:
-            args: command line arguments
+            path: path to tests
+            method: run method
         """
 
         # Load embeddings instance - used to calculate similarity
@@ -162,20 +165,21 @@ class STS:
         embeddings.load(Models.modelPath("stackexchange"))
 
         # Test model against sts dataset
-        self.test(method, embeddings)
+        self.test(embeddings, path, method)
 
-    def test(self, method, embeddings):
+    def test(self, embeddings, path, method):
         """
         Tests input Embeddings model against STS benchmark data.
 
         Args:
-            args: command line arguments
-            embeddings: Embeddings model
+            embeddings: embeddings instance
+            path: path to tests
+            method: run method
         """
 
         # Test file path
-        path = Models.testPath(
-            "stsbenchmark", f"sts-{'dev' if method == 'dev' else 'test'}.csv"
+        path = os.path.join(
+            path, "stsbenchmark", f"sts-{'dev' if method == 'dev' else 'test'}.csv"
         )
 
         # Read test data
@@ -236,6 +240,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-s", "--source", required=True, help="data source", metavar="SOURCE"
     )
+    parser.add_argument(
+        "-p", "--path", required=True, help="path to test files", metavar="PATH"
+    )
     parser.add_argument("-m", "--method", help="run method", metavar="METHOD")
 
     # Parse command line arguments
@@ -245,4 +252,4 @@ if __name__ == "__main__":
     action = STS() if args.source.lower() == "sts" else StackExchange()
 
     # Run eval action
-    action(args.method)
+    action(args.path, args.method)

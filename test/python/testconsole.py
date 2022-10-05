@@ -4,6 +4,7 @@ Console module tests
 
 import contextlib
 import io
+import os
 import unittest
 
 from codequestion.console import Console
@@ -24,6 +25,8 @@ class TestConsole(unittest.TestCase):
         """
         Initialize test data.
         """
+
+        os.environ["CODEQUESTION_HOME"] = Utils.STACKEXCHANGE + ".console"
 
         # Run etl process
         Execute.SOURCES = ["ai"]

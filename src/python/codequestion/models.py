@@ -14,7 +14,7 @@ class Models:
     @staticmethod
     def basePath(create=False):
         """
-        Base data path - ~/.codequestion
+        Base data path.
 
         Args:
             create: if directory should be created
@@ -23,8 +23,11 @@ class Models:
             path
         """
 
-        # Get model cache path
-        path = os.path.join(os.path.expanduser("~"), ".codequestion")
+        # Derive base path
+        path = os.environ.get("CODEQUESTION_HOME")
+
+        # Default model base path when environment variable is empty
+        path = path if path else os.path.join(os.path.expanduser("~"), ".codequestion")
 
         # Create directory if required
         if create:
@@ -52,21 +55,6 @@ class Models:
             os.makedirs(path, exist_ok=True)
 
         return path
-
-    @staticmethod
-    def testPath(source, name):
-        """
-        Builds path to a test data file.
-
-        Args:
-            source: test source name
-            name: file name
-
-        Returns:
-            path
-        """
-
-        return os.path.join(Models.basePath(), "test", source, name)
 
     @staticmethod
     def vectorPath(name, create=False):
