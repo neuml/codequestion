@@ -69,7 +69,9 @@ class TestIndex(unittest.TestCase):
 
         # Test search
         search = Search()
-        self.assertIn("machine learning", self.command(lambda: search("machine learning")))
+        self.assertIn(
+            "machine learning", self.command(lambda: search("machine learning"))
+        )
 
     def stackexchange(self):
         """
@@ -77,8 +79,12 @@ class TestIndex(unittest.TestCase):
         """
 
         action = StackExchange()
-        self.assertIn("Mean Reciprocal Rank", self.command(lambda: action(Utils.TESTS, None)))
-        self.assertIn("Mean Reciprocal Rank", self.command(lambda: action(Utils.TESTS, "bm25")))
+        self.assertIn(
+            "Mean Reciprocal Rank", self.command(lambda: action(Utils.TESTS, None))
+        )
+        self.assertIn(
+            "Mean Reciprocal Rank", self.command(lambda: action(Utils.TESTS, "bm25"))
+        )
 
     def sts(self):
         """

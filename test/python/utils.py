@@ -11,4 +11,4 @@ class Utils:
     PATH = "/tmp/codequestion"
     STACKEXCHANGE = PATH + "/stackexchange"
     QUESTIONS = STACKEXCHANGE + "/questions.db"
-    TESTS = PATH+ "/test"
+    TESTS = PATH + "/test"

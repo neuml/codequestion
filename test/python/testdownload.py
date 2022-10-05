@@ -22,7 +22,10 @@ class TestDownload(unittest.TestCase):
         """
 
         download = Download()
-        download("https://github.com/neuml/codequestion/archive/refs/heads/master.zip", Utils.PATH)
+        download(
+            "https://github.com/neuml/codequestion/archive/refs/heads/master.zip",
+            Utils.PATH,
+        )
 
         # Check archive uncompressed successfully
         self.assertTrue(os.path.exists(Utils.PATH + "/codequestion-master/setup.py"))
