@@ -267,3 +267,8 @@ To reproduce the tests above, run the following. Substitute $TEST_PATH with any 
     wget http://ixa2.si.ehu.es/stswiki/images/4/48/Stsbenchmark.tar.gz
     tar -C $TEST_PATH -xvzf Stsbenchmark.tar.gz
     python -m codequestion.evaluate -s test -p $TEST_PATH
+
+## Further reading
+
+- [Find answers with codequestion 2.0](https://medium.com/neuml/find-answers-with-codequestion-2-0-50b2cfd8c8fe)
+- [Building a sentence embedding index with fastText and BM25 (codequestion 1.0)](https://towardsdatascience.com/building-a-sentence-embedding-index-with-fasttext-and-bm25-f07e7148d240)
