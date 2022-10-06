@@ -92,9 +92,19 @@ Semantic graphs add support for topic modeling and path traversal. Topics organi
 
 ![topics](https://raw.githubusercontent.com/neuml/codequestion/master/images/topics.gif)
 
+## VS Code
+
+A codequestion prompt can be started within Visual Studio Code. This enables asking coding questions right from your IDE.
+
+Run `` Ctrl+` `` to open a new terminal then type `codequestion`.
+
+![vscode](https://raw.githubusercontent.com/neuml/codequestion/master/images/vscode.png)
+
 ## API service
 
 codequestion builds a standard txtai embeddings index. As such, it supports hosting the index via a [txtai API service](https://neuml.github.io/txtai/api).
+
+Running the following:
 
 _app.yml_
 ```yaml
@@ -110,7 +120,36 @@ pip install codequestion[api]
 CONFIG=app.yml uvicorn "txtai.api:app"
 
 # Test API
-curl "http://127.0.0.1:8000/search?query=python+regex"
+curl "http://127.0.0.1:8000/search?query=python+query+sqlite&limit=1"
+```
+
+Outputs:
+```json
+[{
+    "id":"616429",
+    "text":"How to fetch data from sqlite using python? stackoverflow python sqlite",
+    "score":0.8401689529418945
+}]
+```
+
+Additional metadata fields can be pulled back with SQL statements.
+
+```
+curl
+    --get
+    --data-urlencode "query=select id, date, tags, question, score from txtai where similar('python query sqlite')"
+    --data-urlencode "limit=1"
+    "http://127.0.0.1:8000/search"
+```
+
+```json
+[{
+    "id":"616429",
+    "date":"2022-05-23T10:45:40.397",
+    "tags":"python sqlite",
+    "question":"How to fetch data from sqlite using python?",
+    "score":0.8401689529418945
+}]
 ```
 
 ## Tech overview
