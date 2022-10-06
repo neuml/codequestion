@@ -34,6 +34,9 @@ Developers typically have a web browser window open while they work and run web 
 
 The default model for codequestion is built off the [Stack Exchange Dumps on archive.org](https://archive.org/details/stackexchange). Once a model is installed, codequestion runs locally, no network connection is required. 
 
+![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture.png#gh-light-mode-only)
+![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture-dark.png#gh-dark-mode-only)
+
 codequestion is built with Python 3.7+ and [txtai](https://github.com/neuml/txtai).
 
 ## Installation
@@ -113,10 +116,7 @@ curl "http://127.0.0.1:8000/search?query=python+regex"
 ## Tech overview
 The following is an overview covering how this project works.
 
-![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture.png#gh-light-mode-only)
-![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture-dark.png#gh-dark-mode-only)
-
-### Processing the raw data dumps
+### Process the raw data dumps
 The raw 7z XML dumps from Stack Exchange are processed through a series of steps (see [building a model](#building-a-model)). Only highly scored questions with accepted answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.
 
 *questions.db schema*
@@ -132,13 +132,13 @@ The raw 7z XML dumps from Stack Exchange are processed through a series of steps
     AnswerUser TEXT
     Reference TEXT
 
-### Indexing
+### Index
 codequestion builds a [txtai embeddings index](https://github.com/neuml/txtai) for questions.db. Each question in the questions.db schema is vectorized with a sentence-transformers model. Once questions.db is converted to a collection of sentence embeddings, the embeddings are normalized and stored in Faiss, which enables fast similarity searches.
 
-### Querying
+### Query
 codequestion tokenizes each query using the same method as during indexing. Those tokens are used to build a sentence embedding. That embedding is queried against the Faiss index to find the most similar questions.
 
-## Building a model
+## Build a model
 The following steps show how to build a codequestion model using Stack Exchange archives.
 
 _This is not necessary if using the default model from the [GitHub release page](https://github.com/neuml/codequestion/releases)_
@@ -220,7 +220,7 @@ Models are scored using [Pearson Correlation](https://en.wikipedia.org/wiki/Pear
 | all-MiniLM-L6-v2 | Train         | 87.0  | 82.7  |
 | SE 300d - BM25   | Train         | 74.0  | 67.4  |
 
-## Testing
+## Tests
 To reproduce the tests above, run the following. Substitute $TEST_PATH with any local path.
 
     mkdir -p $TEST_PATH
