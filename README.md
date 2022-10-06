@@ -114,7 +114,7 @@ embeddings:
 
 ```
 # Install API extra
-pip install codequestion[api]
+pip install txtai[api]
 
 # Start API
 CONFIG=app.yml uvicorn "txtai.api:app"
@@ -218,7 +218,7 @@ python -m codequestion.etl.stackexchange.execute stackexchange
 
 This will create the file stackexchange/questions.db
 
-4.) __OPTIONAL:__ Build word vectors - only necessary if using a word vectors model
+4.) __OPTIONAL:__ Build word vectors - only necessary if using a word vectors model. If using word vector models, make sure to run `pip install txtai[similarity]`
 
 ```
 python -m codequestion.vectors stackexchange/questions.db
