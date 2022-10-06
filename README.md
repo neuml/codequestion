@@ -26,7 +26,7 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-codequestion is a semantic search application for technical questions.
+codequestion is a semantic search application for developer questions.
 
 ![demo](https://raw.githubusercontent.com/neuml/codequestion/master/demo.gif)
 
