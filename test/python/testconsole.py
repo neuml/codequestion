@@ -41,6 +41,14 @@ class TestConsole(unittest.TestCase):
         cls.console = Console()
         cls.console.preloop()
 
+    def testHelp(self):
+        """
+        Test help command
+        """
+
+        self.assertIn(".limit", self.command("help"))
+        self.assertIn(".limit", self.command("help .limit"))
+
     def testLimit(self):
         """
         Test .limit command
