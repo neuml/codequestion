@@ -172,7 +172,7 @@ The raw 7z XML dumps from Stack Exchange are processed through a series of steps
     Reference TEXT
 
 ### Index
-codequestion builds a [txtai embeddings index](https://github.com/neuml/txtai) for questions.db. Each question in the questions.db schema is vectorized with a sentence-transformers model. Once questions.db is converted to a collection of sentence embeddings, the embeddings are normalized and stored in Faiss, which enables fast similarity searches.
+codequestion builds a txtai embeddings index for questions.db. Each question in the questions.db schema is vectorized with a sentence-transformers model. Once questions.db is converted to a collection of sentence embeddings, the embeddings are normalized and stored in Faiss, which enables fast similarity searches.
 
 ### Query
 codequestion tokenizes each query using the same method as during indexing. Those tokens are used to build a sentence embedding. That embedding is queried against the Faiss index to find the most similar questions.
