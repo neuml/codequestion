@@ -2,7 +2,8 @@
 from setuptools import find_packages, setup
 
 with open("README.md", "r", encoding="utf-8") as f:
-    DESCRIPTION = f.read()
+    # Remove GitHub dark mode images
+    DESCRIPTION = "".join([line for line in f if "gh-dark-mode-only" not in line])
 
 setup(
     name="codequestion",

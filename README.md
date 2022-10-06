@@ -3,21 +3,18 @@
 </p>
 
 <h3 align="center">
-    <p>Ask coding questions directly from the terminal</p>
+    <p>Semantic search for developers</p>
 </h3>
 
 <p align="center">
     <a href="https://github.com/neuml/codequestion/releases">
         <img src="https://img.shields.io/github/release/neuml/codequestion.svg?style=flat&color=success" alt="Version"/>
     </a>
-    <a href="https://github.com/neuml/codequestion/releases">
-        <img src="https://img.shields.io/github/release-date/neuml/codequestion.svg?style=flat&color=blue" alt="GitHub Release Date"/>
+    <a href="https://github.com/neuml/codequestion">
+        <img src="https://img.shields.io/github/last-commit/neuml/codequestion.svg?style=flat&color=blue" alt="GitHub last commit"/>
     </a>
     <a href="https://github.com/neuml/codequestion/issues">
         <img src="https://img.shields.io/github/issues/neuml/codequestion.svg?style=flat&color=success" alt="GitHub issues"/>
-    </a>
-    <a href="https://github.com/neuml/codequestion">
-        <img src="https://img.shields.io/github/last-commit/neuml/codequestion.svg?style=flat&color=blue" alt="GitHub last commit"/>
     </a>
     <a href="https://github.com/neuml/codequestion/actions?query=workflow%3Abuild">
         <img src="https://github.com/neuml/codequestion/workflows/build/badge.svg" alt="Build Status"/>
@@ -29,13 +26,15 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
-codequestion is a Python application that empowers users to ask coding questions directly from the terminal. Developers often have a web browser window open while they work and run web searches as questions arise. With codequestion, this can be done from a local context.
-
-The default model for codequestion is built off the [Stack Exchange Dumps on archive.org](https://archive.org/details/stackexchange). With the default model, codequestion runs locally, no network connection is required. The model executes similarity queries to find similar questions to the input query.
-
-An example of how codequestion works is shown below:
+codequestion is a semantic search application for technical questions.
 
 ![demo](https://raw.githubusercontent.com/neuml/codequestion/master/demo.gif)
+
+Developers typically have a web browser window open while they work and run web searches as questions arise. With codequestion, this can be done from a local context. This application executes similarity queries to find similar questions to the input query.
+
+The default model for codequestion is built off the [Stack Exchange Dumps on archive.org](https://archive.org/details/stackexchange). Once a model is installed, codequestion runs locally, no network connection is required. 
+
+codequestion is built with Python 3.7+ and [txtai](https://github.com/neuml/txtai).
 
 ## Installation
 The easiest way to install is via pip and PyPI
@@ -52,9 +51,9 @@ codequestion can also be installed directly from GitHub to access the latest, un
 pip install git+https://github.com/neuml/codequestion
 ```
 
-See [this link](https://neuml.github.io/txtai/install/#environment-specific-prerequisites) to help resolve environment-specific install issues.
+See [this link](https://neuml.github.io/txtai/install/#environment-specific-prerequisites) for environment-specific troubleshooting.
 
-## Downloading a model
+## Download a model
 
 Once codequestion is installed, a model needs to be downloaded.
 
@@ -70,17 +69,27 @@ The model can also be manually installed if the machine doesn't have direct inte
 unzip cqmodel.zip ~/.codequestion
 ```
 
-## Running queries
+## Search
 
-The fastest way to run queries is to start a codequestion shell
+Start up a codequestion shell to get started.
 
 ```
 codequestion
 ```
 
-A prompt will come up. Queries can be typed directly into the console.
+A prompt will appear. Queries can be typed into the console. Type `help` to see all available commands.
 
-## Run as API service
+![demo](https://raw.githubusercontent.com/neuml/codequestion/master/demo.gif)
+
+## Topics
+
+The latest release integrates [txtai 5.0](https://medium.com/neuml/whats-new-in-txtai-5-0-e5c75a13b101), which has support for semantic graphs.
+
+Semantic graphs add support for topic modeling and path traversal. Topics organize questions into groups with similar concepts. Path traversal uses the semantic graph to show how two potentially disparate entries are connected. An example covering both topic and path traversal is shown below.
+
+![topics](https://raw.githubusercontent.com/neuml/codequestion/master/images/topics.gif)
+
+## API service
 
 codequestion builds a standard txtai embeddings index. As such, it supports hosting the index via a [txtai API service](https://neuml.github.io/txtai/api).
 
@@ -103,6 +112,9 @@ curl "http://127.0.0.1:8000/search?query=python+regex"
 
 ## Tech overview
 The following is an overview covering how this project works.
+
+![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture.png#gh-light-mode-only)
+![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture-dark.png#gh-dark-mode-only)
 
 ### Processing the raw data dumps
 The raw 7z XML dumps from Stack Exchange are processed through a series of steps (see [building a model](#building-a-model)). Only highly scored questions with accepted answers are retrieved for storage in the model. Questions and answers are consolidated into a single SQLite file called questions.db. The schema for questions.db is below.

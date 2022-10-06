@@ -85,6 +85,29 @@ class Console(Cmd):
         except Exception:
             self.console.print_exception()
 
+    def do_help(self, arg):
+        """
+        Shows a help message.
+
+        Args:
+            arg: optional help message argument
+        """
+
+        commands = {
+            ".limit": "(number)\t\tset the maximum number of query rows to return",
+            ".path": "(start) (end)\tprints a semantic path between questions",
+            ".show": "(id)\t\tprint question with specified id",
+            ".topics": "(query)\t\tshows topics best matching query. if query is empty, top topics are shown",
+        }
+
+        if arg in commands:
+            self.console.print(f"{arg} {commands[arg]}")
+        else:
+            for command, message in commands.items():
+                self.console.print(f"{command} {message}")
+
+            self.console.print("\nDefault mode runs a search query")
+
     def split(self, command, default=None):
         """
         Splits command by whitespace.
