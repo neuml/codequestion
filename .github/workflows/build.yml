@@ -21,7 +21,7 @@ jobs:
           python-version: 3.7
         if: matrix.os == 'ubuntu-latest'
 
-      - name: Install Python - Windows/macOS
+      - name: Install Python - macOS/Windows
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
