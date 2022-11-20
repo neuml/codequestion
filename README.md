@@ -20,7 +20,7 @@
         <img src="https://github.com/neuml/codequestion/workflows/build/badge.svg" alt="Build Status"/>
     </a>
     <a href="https://coveralls.io/github/neuml/codequestion?branch=master">
-        <img src="https://img.shields.io/coveralls/github/neuml/codequestion" alt="Coverage Status">
+        <img src="https://img.shields.io/coverallsCoverage/github/neuml/codequestion" alt="Coverage Status">
     </a>
 </p>
 
