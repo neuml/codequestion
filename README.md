@@ -40,6 +40,7 @@ The default model for codequestion is built off the [Stack Exchange Dumps on arc
 codequestion is built with Python 3.7+ and [txtai](https://github.com/neuml/txtai).
 
 ## Installation
+
 The easiest way to install is via pip and PyPI
 
 ```
