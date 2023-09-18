@@ -37,7 +37,7 @@ The default model for codequestion is built off the [Stack Exchange Dumps on arc
 ![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture.png#gh-light-mode-only)
 ![architecture](https://raw.githubusercontent.com/neuml/codequestion/master/images/architecture-dark.png#gh-dark-mode-only)
 
-codequestion is built with Python 3.7+ and [txtai](https://github.com/neuml/txtai).
+codequestion is built with Python 3.8+ and [txtai](https://github.com/neuml/txtai).
 
 ## Installation
 
@@ -47,7 +47,7 @@ The easiest way to install is via pip and PyPI
 pip install codequestion
 ```
 
-Python 3.7+ is supported. Using a Python [virtual environment](https://docs.python.org/3/library/venv.html) is recommended.
+Python 3.8+ is supported. Using a Python [virtual environment](https://docs.python.org/3/library/venv.html) is recommended.
 
 codequestion can also be installed directly from GitHub to access the latest, unreleased features.
 
