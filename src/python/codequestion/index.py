@@ -54,7 +54,7 @@ class Index:
         embeddings = Embeddings(config)
 
         # Build scoring index, if scoring method provided
-        if embeddings.scoring:
+        if embeddings.isweighted():
             embeddings.score(self.stream(dbfile, embeddings, "Building scoring index"))
 
         # Build embeddings index
@@ -97,7 +97,7 @@ class Index:
             row["text"] = row["question"] + " " + row["source"] + " " + row["tags"]
 
             # Use custom tokenizer for word vector models
-            if embeddings.scoring:
+            if embeddings.isweighted():
                 row["text"] = Tokenizer.tokenize(row["text"])
 
             # Yield document

@@ -46,7 +46,7 @@ class Search:
         if uid is not None:
             # ID query
             query = f"{prefix} id = '{uid}'"
-        elif self.embeddings.scoring:
+        elif self.embeddings.isweighted():
             # Use custom tokenizer for word vector models
             query = Tokenizer.tokenize(query)
 

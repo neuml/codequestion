@@ -9,7 +9,6 @@ import os
 from scipy.stats import pearsonr, spearmanr
 from tqdm import tqdm
 from txtai.embeddings import Embeddings
-from txtai.scoring import ScoringFactory
 
 from .models import Models
 from .tokenizer import Tokenizer
@@ -30,17 +29,16 @@ class StackExchange:
         """
 
         # Load model
-        embeddings, scoring = self.load(), None
+        embeddings = self.load()
 
         # Statistics
         mrr = []
 
         # Build scoring index
         if method in ("bm25", "tfidf", "sif"):
-            scoring = ScoringFactory.create(
-                {"method": method, "content": True, "terms": True, "k1": 0.1}
-            )
-            scoring.index(self.stream(embeddings, "Building scoring index"))
+            scoring = Embeddings({"keyword": True, "content": True})
+            scoring.index(self.stream(embeddings, "Building keyword index"))
+            embeddings = scoring
 
         # Run test data
         with open(
@@ -51,7 +49,7 @@ class StackExchange:
                 print(query, sourceid, source)
 
                 # Run search
-                results = self.search(embeddings, scoring, query)
+                results = self.search(embeddings, query)
 
                 # Get row index within results
                 index = -1
@@ -103,13 +101,12 @@ class StackExchange:
 
                 progress.update(batch)
 
-    def search(self, embeddings, scoring, query):
+    def search(self, embeddings, query):
         """
         Executes a search.
 
         Args:
             embeddings: embeddings instance
-            scoring: scoring instance
             query: query to run
 
         Returns:
@@ -117,10 +114,7 @@ class StackExchange:
         """
 
         results = None
-        if scoring:
-            # Scoring models have data field with source id + source
-            results = [result["data"] for result in scoring.search(query, 10)]
-        elif embeddings.scoring:
+        if embeddings.isweighted():
             # Use custom tokenizer for word vector models
             uids = [
                 row["id"] for row in embeddings.search(Tokenizer.tokenize(query), 10)
@@ -193,7 +187,7 @@ class STS:
             text1, text2 = row[2], row[3]
 
             # Use custom tokenizer for word vector models
-            if embeddings.scoring:
+            if embeddings.isweighted():
                 text1 = Tokenizer.tokenize(text1)
                 text2 = Tokenizer.tokenize(text2)
 

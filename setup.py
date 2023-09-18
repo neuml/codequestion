@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="codequestion",
-    version="2.0.0",
+    version="2.1.0",
     author="NeuML",
     description="Ask coding questions directly from the terminal",
     long_description=DESCRIPTION,
@@ -22,7 +22,7 @@ setup(
     packages=find_packages(where="src/python"),
     package_dir={"": "src/python"},
     keywords="search embedding machine-learning nlp",
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     entry_points={
         "console_scripts": [
             "codequestion = codequestion.console:main",
@@ -33,7 +33,7 @@ setup(
         "rich>=12.0.1",
         "scipy>=1.4.1",
         "tqdm>=4.48.0",
-        "txtai[graph]>=5.0.0",
+        "txtai[graph]>=6.0.0",
     ],
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
