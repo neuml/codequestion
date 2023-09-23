@@ -2,9 +2,9 @@
     <img src="https://raw.githubusercontent.com/neuml/codequestion/master/logo.png"/>
 </p>
 
-<h3 align="center">
-    <p>Semantic search for developers</p>
-</h3>
+<p align="center">
+    <b>Semantic search for developers</b>
+</p>
 
 <p align="center">
     <a href="https://github.com/neuml/codequestion/releases">
